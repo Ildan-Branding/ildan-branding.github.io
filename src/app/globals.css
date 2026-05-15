@@ -84,6 +84,20 @@ body {
   .glass-lime { background: rgba(200, 255, 61, 0.12); }
 }
 
+/* Safe viewport heights — dvh adapts to iOS Safari URL bar, vh as fallback */
+.min-h-screen-safe {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+.min-h-hero-inner {
+  min-height: calc(100vh - 6rem);
+  min-height: calc(100dvh - 6rem);
+}
+.min-h-80svh {
+  min-height: 80vh;
+  min-height: 80dvh;
+}
+
 /* Editorial display type */
 .display-1 {
   font-weight: 900;

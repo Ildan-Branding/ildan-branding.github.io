@@ -34,7 +34,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-ink">
+    <section className="min-h-screen-safe relative w-full overflow-hidden bg-ink">
       {/* Lime glow follow — desktop only via @media hover */}
       <div
         ref={glowRef}
@@ -84,7 +84,7 @@ export default function Hero() {
       </div>
 
       {/* Hero copy */}
-      <div className="relative z-10 mx-auto flex min-h-[calc(100vh-6rem)] max-w-7xl flex-col justify-center px-5 pb-20 pt-16 md:px-12 md:pb-32">
+      <div className="min-h-hero-inner relative z-10 mx-auto flex max-w-7xl flex-col justify-center px-5 pb-20 pt-16 md:px-12 md:pb-32">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

@@ -105,7 +105,7 @@ function ManifestoSlide({ slide, index }: { slide: Slide; index: number }) {
   return (
     <section
       ref={ref}
-      className="relative flex min-h-screen w-full snap-start items-center justify-center px-5 py-20 md:px-12"
+      className="min-h-screen-safe relative flex w-full items-center justify-center px-5 py-20 md:px-12"
     >
       <motion.div
         style={isTouch ? { opacity } : { y, opacity }}
@@ -150,7 +150,7 @@ export default function Manifesto() {
       ))}
 
       {/* Transition slogan */}
-      <section className="relative flex min-h-[80vh] items-center justify-center overflow-hidden px-5 md:px-12">
+      <section className="min-h-80svh relative flex items-center justify-center overflow-hidden px-5 md:px-12">
         <div className="absolute inset-0 flex flex-col items-center justify-center font-mono opacity-[0.04]">
           <div className="text-[20vw] font-black leading-none">TRY</div>
           <div className="text-[20vw] font-black leading-none">FAIL</div>
