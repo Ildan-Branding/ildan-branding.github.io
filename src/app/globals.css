@@ -44,13 +44,8 @@ body {
   will-change: auto;
 }
 
-/* Reduced grain on mobile / reduce-motion */
-@media (max-width: 640px) {
-  .grain::before {
-    opacity: 0.04;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
+/* Disable grain on touch devices entirely — fixed layer flickers on iOS momentum scroll */
+@media (hover: none), (prefers-reduced-motion: reduce) {
   .grain::before {
     display: none;
   }
@@ -122,7 +117,6 @@ body {
   scrollbar-width: none;
 }
 
-/* Hint sections are independent for paint */
-section {
-  contain: layout style paint;
-}
+/* NOTE: removed `contain: layout style paint` on sections —
+   it caused visible "snap" at section boundaries during iOS Safari momentum scroll
+   (layer recomposition between contained sections). */
