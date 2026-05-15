@@ -40,7 +40,7 @@ export default function CTA() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="mb-8 inline-flex items-center gap-2 rounded-full border border-ink/20 bg-white/30 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.3em] text-ink backdrop-blur-xl md:text-xs"
+          className="mb-8 inline-flex items-center gap-2 rounded-full border border-ink/20 bg-white/40 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.3em] text-ink md:bg-white/30 md:text-xs md:backdrop-blur-md"
         >
           <span className="h-2 w-2 animate-pulse rounded-full bg-ink" />
           <span>Now Recruiting · First Cohort</span>

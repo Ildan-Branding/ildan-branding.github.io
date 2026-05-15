@@ -1,32 +1,50 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
 export default function Hero() {
-  const [mouse, setMouse] = useState({ x: 0, y: 0 });
-  const [mounted, setMounted] = useState(false);
+  const glowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setMounted(true);
-    const onMove = (e: MouseEvent) => setMouse({ x: e.clientX, y: e.clientY });
-    window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
+    if (matchMedia("(hover: none)").matches) return;
+    let raf = 0;
+    let x = 0;
+    let y = 0;
+    let pending = false;
+    const tick = () => {
+      pending = false;
+      if (glowRef.current) {
+        glowRef.current.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+      }
+    };
+    const onMove = (e: MouseEvent) => {
+      x = e.clientX;
+      y = e.clientY;
+      if (!pending) {
+        pending = true;
+        raf = requestAnimationFrame(tick);
+      }
+    };
+    window.addEventListener("mousemove", onMove, { passive: true });
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      cancelAnimationFrame(raf);
+    };
   }, []);
 
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-ink">
-      {/* Lime glow follow */}
-      {mounted && (
-        <div
-          className="pointer-events-none fixed left-0 top-0 h-[40rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60 blur-[140px] transition-transform duration-300 will-change-transform"
-          style={{
-            transform: `translate(${mouse.x}px, ${mouse.y}px) translate(-50%, -50%)`,
-            background:
-              "radial-gradient(circle, rgba(200,255,61,0.35) 0%, rgba(200,255,61,0) 70%)",
-          }}
-        />
-      )}
+      {/* Lime glow follow — desktop only via @media hover */}
+      <div
+        ref={glowRef}
+        className="pointer-events-none fixed left-0 top-0 hidden h-[36rem] w-[36rem] rounded-full opacity-60 blur-[120px] will-change-transform md:block"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(200,255,61,0.35) 0%, rgba(200,255,61,0) 70%)",
+          transform: "translate3d(-9999px, -9999px, 0) translate(-50%, -50%)",
+        }}
+      />
 
       {/* Glass orb decorations */}
       <div className="absolute -left-32 top-1/4 h-72 w-72 rounded-full bg-lime/20 blur-3xl md:h-96 md:w-96" />

@@ -113,7 +113,7 @@ export default function Vibe() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.08 }}
-                className="group flex gap-4 rounded-2xl border border-ink/15 bg-white/40 p-5 backdrop-blur-xl transition hover:bg-white/70 md:p-6"
+                className="group flex gap-4 rounded-2xl border border-ink/15 bg-white/50 p-5 transition hover:bg-white/70 md:bg-white/40 md:p-6 md:backdrop-blur-md"
               >
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-ink font-mono text-xl font-bold text-lime">
                   {r.icon}

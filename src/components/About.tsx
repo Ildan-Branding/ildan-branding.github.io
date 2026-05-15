@@ -98,7 +98,7 @@ export default function About() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: i * 0.08 }}
-              className={`group relative overflow-hidden rounded-3xl border border-ink/10 bg-white/40 p-6 backdrop-blur-xl transition hover:border-ink/30 hover:bg-white/70 md:p-8 ${
+              className={`group relative overflow-hidden rounded-3xl border border-ink/10 bg-white/50 p-6 transition hover:border-ink/30 hover:bg-white/70 md:bg-white/40 md:p-8 md:backdrop-blur-md ${
                 i === 4 ? "sm:col-span-2 lg:col-span-1" : ""
               }`}
             >

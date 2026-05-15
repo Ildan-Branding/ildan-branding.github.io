@@ -35,52 +35,61 @@ html {
   color: var(--ink);
 }
 
-/* Grain texture overlay */
+/* Grain texture overlay — static, no mix-blend-mode (perf) */
 .grain::before {
   content: "";
   position: fixed;
-  inset: -50%;
+  inset: 0;
   z-index: 100;
   pointer-events: none;
-  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-  opacity: 0.25;
-  mix-blend-mode: overlay;
-  animation: grain 8s steps(10) infinite;
+  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  opacity: 0.06;
+  will-change: auto;
 }
 
-@keyframes grain {
-  0%, 100% { transform: translate(0, 0); }
-  10% { transform: translate(-5%, -10%); }
-  20% { transform: translate(-15%, 5%); }
-  30% { transform: translate(7%, -25%); }
-  40% { transform: translate(-5%, 25%); }
-  50% { transform: translate(-15%, 10%); }
-  60% { transform: translate(15%, 0); }
-  70% { transform: translate(0, 15%); }
-  80% { transform: translate(3%, 35%); }
-  90% { transform: translate(-10%, 10%); }
+/* Reduced grain on mobile / reduce-motion */
+@media (max-width: 640px) {
+  .grain::before {
+    opacity: 0.04;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .grain::before {
+    display: none;
+  }
 }
 
-/* Glassmorphism utility */
+/* Glassmorphism — reduced blur for paint perf */
 .glass {
   background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(20px) saturate(140%);
-  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
   border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .glass-dark {
-  background: rgba(10, 10, 10, 0.4);
-  backdrop-filter: blur(24px) saturate(140%);
-  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  background: rgba(10, 10, 10, 0.55);
+  backdrop-filter: blur(12px) saturate(130%);
+  -webkit-backdrop-filter: blur(12px) saturate(130%);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .glass-lime {
-  background: rgba(200, 255, 61, 0.08);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  background: rgba(200, 255, 61, 0.1);
+  backdrop-filter: blur(10px) saturate(150%);
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
   border: 1px solid rgba(200, 255, 61, 0.25);
+}
+
+/* Drop backdrop-filter on mobile (huge paint cost on Android Chrome) */
+@media (max-width: 768px) {
+  .glass, .glass-dark, .glass-lime {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .glass { background: rgba(255, 255, 255, 0.05); }
+  .glass-dark { background: rgba(20, 20, 20, 0.85); }
+  .glass-lime { background: rgba(200, 255, 61, 0.12); }
 }
 
 /* Editorial display type */
@@ -116,9 +125,7 @@ html {
   scrollbar-width: none;
 }
 
-/* Disable on small screens for perf */
-@media (max-width: 640px) {
-  .grain::before {
-    opacity: 0.18;
-  }
+/* Hint sections are independent for paint */
+section {
+  contain: layout style paint;
 }
