@@ -108,7 +108,7 @@ function ManifestoSlide({ slide, index }: { slide: Slide; index: number }) {
       className="min-h-screen-safe relative flex w-full items-center justify-center px-5 py-20 md:px-12"
     >
       <motion.div
-        style={isTouch ? { opacity } : { y, opacity }}
+        style={isTouch ? undefined : { y, opacity }}
         className={`flex max-w-5xl flex-col gap-6 ${alignClass}`}
       >
         <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/40 md:text-xs">

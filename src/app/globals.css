@@ -137,3 +137,22 @@ body {
 /* NOTE: removed `contain: layout style paint` on sections —
    it caused visible "snap" at section boundaries during iOS Safari momentum scroll
    (layer recomposition between contained sections). */
+
+/* === Mobile: pin body, scroll inside <main> ===
+   iOS Safari의 URL바는 body 스크롤에만 반응함.
+   body를 고정하고 <main> 안에서 스크롤하면 URL바가 안 움직여서
+   URL바 트랜지션 중 발생하던 페이지 점프가 사라짐. */
+@media (hover: none) {
+  html,
+  body {
+    height: 100%;
+    overflow: hidden;
+  }
+  body > main {
+    height: 100vh;
+    height: 100svh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+}
