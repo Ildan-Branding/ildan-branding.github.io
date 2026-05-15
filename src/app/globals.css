@@ -24,10 +24,7 @@ body {
   -webkit-tap-highlight-color: transparent;
   word-break: keep-all;
   overflow-wrap: break-word;
-}
-
-html {
-  scroll-behavior: smooth;
+  overscroll-behavior-y: none;
 }
 
 ::selection {

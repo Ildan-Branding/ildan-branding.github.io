@@ -1,7 +1,15 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+
+function useIsTouch() {
+  const [isTouch, setIsTouch] = useState(false);
+  useEffect(() => {
+    setIsTouch(matchMedia("(hover: none)").matches);
+  }, []);
+  return isTouch;
+}
 
 type Slide = {
   pre?: string;
@@ -75,6 +83,7 @@ const slides: Slide[] = [
 
 function ManifestoSlide({ slide, index }: { slide: Slide; index: number }) {
   const ref = useRef<HTMLDivElement>(null);
+  const isTouch = useIsTouch();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
@@ -99,7 +108,7 @@ function ManifestoSlide({ slide, index }: { slide: Slide; index: number }) {
       className="relative flex min-h-screen w-full snap-start items-center justify-center px-5 py-20 md:px-12"
     >
       <motion.div
-        style={{ y, opacity }}
+        style={isTouch ? { opacity } : { y, opacity }}
         className={`flex max-w-5xl flex-col gap-6 ${alignClass}`}
       >
         <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/40 md:text-xs">
