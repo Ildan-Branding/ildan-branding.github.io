@@ -25,6 +25,8 @@ body {
   word-break: keep-all;
   overflow-wrap: break-word;
   overscroll-behavior-y: none;
+  /* iOS Safari가 콘텐츠 reflow 시 자동으로 스크롤 위치 보정하는 동작 비활성 */
+  overflow-anchor: none;
 }
 
 ::selection {
@@ -84,18 +86,19 @@ body {
   .glass-lime { background: rgba(200, 255, 61, 0.12); }
 }
 
-/* Safe viewport heights — dvh adapts to iOS Safari URL bar, vh as fallback */
+/* Safe viewport heights — svh는 'small viewport' 고정값이라 URL바 움직임으로 reflow 없음
+   (dvh는 연속 변경 → scroll anchoring 점프 유발). vh fallback 유지. */
 .min-h-screen-safe {
   min-height: 100vh;
-  min-height: 100dvh;
+  min-height: 100svh;
 }
 .min-h-hero-inner {
   min-height: calc(100vh - 6rem);
-  min-height: calc(100dvh - 6rem);
+  min-height: calc(100svh - 6rem);
 }
 .min-h-80svh {
   min-height: 80vh;
-  min-height: 80dvh;
+  min-height: 80svh;
 }
 
 /* Editorial display type */
