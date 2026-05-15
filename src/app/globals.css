@@ -143,12 +143,12 @@ body {
    body를 고정하고 <main> 안에서 스크롤하면 URL바가 안 움직여서
    URL바 트랜지션 중 발생하던 페이지 점프가 사라짐. */
 @media (hover: none) {
-  html,
-  body {
+  html:not(.kakao-webview),
+  html:not(.kakao-webview) body {
     height: 100%;
     overflow: hidden;
   }
-  body > main {
+  html:not(.kakao-webview) body > main {
     height: 100vh;
     height: 100svh;
     overflow-y: auto;
@@ -156,3 +156,6 @@ body {
     -webkit-overflow-scrolling: touch;
   }
 }
+
+/* 카카오톡 인앱 webview: body-fixed 모드가 자체 스크롤 처리와 충돌해 끊김 발생.
+   일반 body 스크롤로 폴백 (KakaoTalk 헤더는 거의 안 움직여서 URL바 점프도 적음) */

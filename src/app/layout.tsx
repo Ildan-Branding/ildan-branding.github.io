@@ -33,6 +33,15 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ko">
+      <head>
+        {/* 카카오톡 인앱 브라우저 감지 — body-fixed 스크롤 모드가 KakaoTalk webview에서 끊김 유발 */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "if(/KAKAOTALK/i.test(navigator.userAgent))document.documentElement.classList.add('kakao-webview');",
+          }}
+        />
+      </head>
       <body className="grain overflow-x-hidden bg-ink text-white antialiased">
         <SmoothScroll />
         {children}
