@@ -9,3 +9,5 @@ next-env.d.ts
 # Reference assets — not part of source
 *.png
 !public/**/*.png
+
+.vercel
