@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
+import TopicMenu from "./TopicMenu";
 
 export default function Hero() {
   const glowRef = useRef<HTMLDivElement>(null);
@@ -52,21 +53,30 @@ export default function Hero() {
 
       {/* Top bar */}
       <div className="relative z-10 flex items-center justify-between gap-4 px-5 pt-6 md:px-12 md:pt-10">
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="shrink-0 font-mono text-[10px] uppercase tracking-[0.25em] text-white/60 md:text-xs"
-        >
-          AI Branding
-          <br />
-          Meetup
-        </motion.div>
+        <div className="flex shrink-0 items-center gap-3 md:gap-4">
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/60 md:text-xs"
+          >
+            AI Branding
+            <br />
+            Meetup
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+          >
+            <TopicMenu />
+          </motion.div>
+        </div>
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="hidden items-center gap-3 font-mono text-xs uppercase tracking-[0.2em] text-white/60 md:flex"
+          className="hidden items-center gap-3 font-mono text-xs uppercase tracking-[0.2em] text-white/60 lg:flex"
         >
           <span className="h-px w-12 bg-white/30" />
           <span>Try with AI.</span>
