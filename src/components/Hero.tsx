@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { useEffect, useRef } from "react";
-import TopicMenu from "./TopicMenu";
 
 export default function Hero() {
   const glowRef = useRef<HTMLDivElement>(null);
@@ -53,30 +53,21 @@ export default function Hero() {
 
       {/* Top bar */}
       <div className="relative z-10 flex items-center justify-between gap-4 px-5 pt-6 md:px-12 md:pt-10">
-        <div className="flex shrink-0 items-center gap-3 md:gap-4">
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/60 md:text-xs"
-          >
-            AI Branding
-            <br />
-            Meetup
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-          >
-            <TopicMenu />
-          </motion.div>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="shrink-0 font-mono text-[10px] uppercase tracking-[0.25em] text-white/60 md:text-xs"
+        >
+          AI Branding
+          <br />
+          Meetup
+        </motion.div>
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="hidden items-center gap-3 font-mono text-xs uppercase tracking-[0.2em] text-white/60 lg:flex"
+          className="hidden items-center gap-3 font-mono text-xs uppercase tracking-[0.2em] text-white/60 md:flex"
         >
           <span className="h-px w-12 bg-white/30" />
           <span>Try with AI.</span>
@@ -107,41 +98,74 @@ export default function Hero() {
           </span>
         </motion.div>
 
-        <h1 className="display-1 text-[18vw] leading-[0.82] md:text-[14vw] lg:text-[12rem]">
-          <motion.span
-            initial={{ opacity: 0, y: 60 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="block"
-          >
-            일단,
-          </motion.span>
-          <motion.span
-            initial={{ opacity: 0, y: 60 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
-            className="block"
-          >
-            <span className="relative inline-block">
-              브랜딩
-              <motion.span
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ duration: 0.8, delay: 1.4, ease: [0.65, 0, 0.35, 1] }}
-                className="absolute -bottom-2 left-0 h-3 w-full origin-left bg-lime md:h-5"
-                style={{ transform: "skewX(-12deg)" }}
-              />
-            </span>
+        <div className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between md:gap-10 lg:gap-16">
+          <h1 className="display-1 text-[18vw] leading-[0.82] md:text-[14vw] lg:text-[12rem]">
             <motion.span
-              initial={{ opacity: 0, scale: 0.5, rotate: -45 }}
-              animate={{ opacity: 1, scale: 1, rotate: 0 }}
-              transition={{ duration: 0.6, delay: 1.6 }}
-              className="ml-2 inline-block text-lime"
+              initial={{ opacity: 0, y: 60 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="block"
             >
-              *
+              일단,
             </motion.span>
-          </motion.span>
-        </h1>
+            <motion.span
+              initial={{ opacity: 0, y: 60 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+              className="block"
+            >
+              <span className="relative inline-block">
+                브랜딩
+                <motion.span
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: 0.8, delay: 1.4, ease: [0.65, 0, 0.35, 1] }}
+                  className="absolute -bottom-2 left-0 h-3 w-full origin-left bg-lime md:h-5"
+                  style={{ transform: "skewX(-12deg)" }}
+                />
+              </span>
+              <motion.span
+                initial={{ opacity: 0, scale: 0.5, rotate: -45 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                transition={{ duration: 0.6, delay: 1.6 }}
+                className="ml-2 inline-block text-lime"
+              >
+                *
+              </motion.span>
+            </motion.span>
+          </h1>
+
+          {/* Topic 버튼 (아래에 추후 버튼 추가 자리) */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            className="flex w-full shrink-0 flex-col gap-4 md:w-auto md:pb-3"
+          >
+            <Link
+              href="/topics"
+              className="group relative flex aspect-[2/1] w-full max-w-[440px] flex-col justify-between overflow-hidden rounded-3xl border border-lime/30 bg-lime/5 p-6 backdrop-blur-sm transition hover:border-lime hover:bg-lime md:w-[280px] md:p-7 lg:w-[360px] lg:p-8 xl:w-[440px]"
+            >
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.3em] text-lime transition group-hover:text-ink md:text-[11px]">
+                  Archive
+                </span>
+                <span className="font-mono text-[10px] text-white/40 transition group-hover:text-ink/60 md:text-[11px]">
+                  01 / 04
+                </span>
+              </div>
+              <div className="flex items-end justify-between">
+                <span className="text-4xl font-extrabold leading-none tracking-tight text-white transition group-hover:text-ink md:text-5xl lg:text-6xl">
+                  Topic
+                </span>
+                <span className="text-3xl leading-none text-lime transition group-hover:translate-x-1 group-hover:text-ink md:text-4xl">
+                  →
+                </span>
+              </div>
+            </Link>
+            {/* 추후 다른 버튼 추가 자리 */}
+          </motion.div>
+        </div>
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}
