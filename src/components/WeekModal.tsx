@@ -158,12 +158,14 @@ export default function WeekModal({ week, onClose }: Props) {
                         {t.num}
                       </div>
                       <div>
-                        <h3 className="mb-1 text-base font-bold leading-snug md:text-lg">
+                        <h3 className="text-base font-bold leading-snug md:text-lg">
                           {t.title}
                         </h3>
-                        <p className="text-sm leading-relaxed text-white/60">
-                          {renderHighlighted(t.desc, t.highlight)}
-                        </p>
+                        {t.desc && (
+                          <p className="mt-1 text-sm leading-relaxed text-white/60">
+                            {renderHighlighted(t.desc, t.highlight)}
+                          </p>
+                        )}
                       </div>
                     </motion.div>
                   ))}

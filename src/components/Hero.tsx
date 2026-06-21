@@ -3,6 +3,10 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
+import { weeks } from "@/data/weeks";
+
+const pad2 = (n: number) => String(n).padStart(2, "0");
+const archiveCount = `${pad2(weeks.filter((w) => w.available).length)} / ${pad2(weeks.length)}`;
 
 export default function Hero() {
   const glowRef = useRef<HTMLDivElement>(null);
@@ -151,7 +155,7 @@ export default function Hero() {
                   Archive
                 </span>
                 <span className="font-mono text-[10px] text-white/40 transition group-hover:text-ink/60 md:text-[11px]">
-                  01 / 04
+                  {archiveCount}
                 </span>
               </div>
               <div className="flex items-end justify-between">
