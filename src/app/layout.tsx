@@ -3,7 +3,7 @@ import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://ildan-branding.vercel.app"),
+  metadataBase: new URL("https://ildan-branding.github.io"),
   title: "일단, 브랜딩 — AI Branding Meetup",
   description:
     "AI를 활용해 이것저것 해보는 가벼운 모임. 정해진 목표 없이, 일단 모여서. Try with AI. Create Anything.",

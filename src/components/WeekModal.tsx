@@ -179,12 +179,12 @@ export default function WeekModal({ week, onClose }: Props) {
                 </div>
                 <div className="text-xs text-white/60">
                   <a
-                    href="https://ildan-branding.vercel.app/"
+                    href="https://ildan-branding.github.io/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="font-medium text-lime transition hover:underline"
                   >
-                    ildan-branding.vercel.app →
+                    ildan-branding.github.io →
                   </a>
                 </div>
               </div>
