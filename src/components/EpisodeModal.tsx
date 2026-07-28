@@ -65,7 +65,9 @@ export default function EpisodeModal({ episode, onClose }: Props) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 12, scale: 0.98 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="relative z-10 mx-4 max-h-[90vh] w-full max-w-[760px] overflow-y-auto rounded-2xl border border-lime/20 bg-ink p-7 text-white md:p-10"
+            /* Lenis(부드러운 스크롤)가 휠을 가로채면 모달 안이 안 굴러가므로 제외시킨다 */
+            data-lenis-prevent
+            className="relative z-10 mx-4 max-h-[90vh] w-full max-w-[760px] overflow-y-auto overscroll-contain rounded-2xl border border-lime/20 bg-ink p-7 text-white md:p-10"
           >
             {/* Close button */}
             <button
@@ -129,14 +131,10 @@ export default function EpisodeModal({ episode, onClose }: Props) {
               </p>
 
               <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-white/10 pt-5 text-xs text-white/50">
-                <span className="font-semibold text-white/80">
-                  {episode.titlePrefix} {episode.titleSuffix}
-                </span>
                 {episode.date && (
-                  <>
-                    <span className="text-white/25">·</span>
-                    <span>{episode.date}</span>
-                  </>
+                  <span className="font-semibold text-white/80">
+                    {episode.date}
+                  </span>
                 )}
                 <span className="text-white/25">·</span>
                 <span>{episode.dateLabel}</span>

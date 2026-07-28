@@ -117,12 +117,7 @@ export default function EpisodesPage() {
                 <div className="mt-auto flex w-full items-end justify-between gap-4 pt-2">
                   <div className="flex flex-col gap-1">
                     <span className="text-sm font-semibold text-white/70">
-                      {e.titlePrefix && (
-                        <em className="not-italic text-lime">
-                          {e.titlePrefix}{" "}
-                        </em>
-                      )}
-                      {e.titleSuffix}
+                      {e.date}
                     </span>
                     <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/35">
                       {e.dateLabel}
