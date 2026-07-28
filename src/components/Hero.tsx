@@ -3,10 +3,9 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
-import { weeks } from "@/data/weeks";
+import { episodes, nextEpisode } from "@/data/episodes";
 
-const pad2 = (n: number) => String(n).padStart(2, "0");
-const archiveCount = `${pad2(weeks.filter((w) => w.available).length)} / ${pad2(weeks.length)}`;
+const doneCount = episodes.filter((e) => e.status === "done").length;
 
 export default function Hero() {
   const glowRef = useRef<HTMLDivElement>(null);
@@ -65,7 +64,7 @@ export default function Hero() {
         >
           AI Branding
           <br />
-          Meetup
+          Podcast
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -139,7 +138,7 @@ export default function Hero() {
             </motion.span>
           </h1>
 
-          {/* Topic 버튼 (아래에 추후 버튼 추가 자리) */}
+          {/* 다음 에피소드 예고 */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -148,21 +147,32 @@ export default function Hero() {
           >
             <Link
               href="/topics"
-              className="group relative flex aspect-[2/1] w-full max-w-[440px] flex-col justify-between overflow-hidden rounded-3xl border border-lime/30 bg-lime/5 p-6 backdrop-blur-sm transition hover:border-lime hover:bg-lime md:w-[280px] md:p-7 lg:w-[360px] lg:p-8 xl:w-[440px]"
+              className="group relative flex w-full max-w-[440px] flex-col gap-6 overflow-hidden rounded-3xl border border-lime/30 bg-lime/5 p-6 backdrop-blur-sm transition hover:border-lime hover:bg-lime/10 md:w-[300px] md:p-7 lg:w-[380px] lg:p-8 xl:w-[440px]"
             >
-              <div className="flex items-center justify-between">
-                <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.3em] text-lime transition group-hover:text-ink md:text-[11px]">
-                  Archive
+              <div className="flex items-center justify-between gap-3">
+                <span className="font-mono text-xs font-semibold uppercase tracking-[0.3em] text-lime md:text-sm">
+                  {nextEpisode.badge}
                 </span>
-                <span className="font-mono text-[10px] text-white/40 transition group-hover:text-ink/60 md:text-[11px]">
-                  {archiveCount}
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-lime px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-ink" />
+                  Next
                 </span>
               </div>
-              <div className="flex items-end justify-between">
-                <span className="text-4xl font-extrabold leading-none tracking-tight text-white transition group-hover:text-ink md:text-5xl lg:text-6xl">
-                  Topic
-                </span>
-                <span className="text-3xl leading-none text-lime transition group-hover:translate-x-1 group-hover:text-ink md:text-4xl">
+
+              <p className="text-balance text-xl font-extrabold leading-[1.3] tracking-tight text-white md:text-2xl lg:text-[1.7rem]">
+                {nextEpisode.question}
+              </p>
+
+              <div className="flex items-end justify-between gap-4 border-t border-lime/20 pt-5">
+                <div className="flex flex-col gap-1">
+                  <span className="text-sm font-semibold text-lime">
+                    {nextEpisode.date}
+                  </span>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">
+                    지난 에피소드 {doneCount}
+                  </span>
+                </div>
+                <span className="text-3xl leading-none text-lime transition group-hover:translate-x-1">
                   →
                 </span>
               </div>
@@ -180,9 +190,9 @@ export default function Hero() {
           AI를 활용해 이것저것 해보는{" "}
           <span className="text-white">가벼운 모임.</span>
           <br />
-          정해진 목표 없이, 일단 모여서 각자 경험을 나누고{" "}
+          한 화에 하나의 질문을 정하고,{" "}
           <br className="hidden md:block" />
-          아이디어를 주고받는 자리.
+          그 하나만 끝까지 파고드는 자리.
         </motion.p>
 
         <motion.div

@@ -4,11 +4,11 @@ import SmoothScroll from "@/components/SmoothScroll";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://ildan-branding.github.io"),
-  title: "일단, 브랜딩 — AI Branding Meetup",
+  title: "일단, 브랜딩 — AI Branding Podcast",
   description:
     "AI를 활용해 이것저것 해보는 가벼운 모임. 정해진 목표 없이, 일단 모여서. Try with AI. Create Anything.",
   openGraph: {
-    title: "일단, 브랜딩 — AI Branding Meetup",
+    title: "일단, 브랜딩 — AI Branding Podcast",
     description: "AI를 활용해 이것저것 해보는 가벼운 모임. 처음은 소수로 시작, 나중엔 함께 더 크게.",
     type: "website",
     locale: "ko_KR",
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "일단, 브랜딩 — AI Branding Meetup",
+    title: "일단, 브랜딩 — AI Branding Podcast",
     description: "AI를 활용해 이것저것 해보는 가벼운 모임.",
   },
 };

@@ -3,14 +3,11 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
-import WeekModal from "@/components/WeekModal";
-import { weeks, type Week } from "@/data/weeks";
+import EpisodeModal from "@/components/EpisodeModal";
+import { episodesDesc, type Episode } from "@/data/episodes";
 
-export default function TopicsPage() {
-  const [active, setActive] = useState<Week | null>(null);
-
-  // 공개된 주차만 노출
-  const visibleWeeks = weeks.filter((w) => w.available);
+export default function EpisodesPage() {
+  const [active, setActive] = useState<Episode | null>(null);
 
   return (
     <main className="min-h-screen-safe relative w-full overflow-hidden bg-ink text-white">
@@ -26,7 +23,7 @@ export default function TopicsPage() {
         >
           AI Branding
           <br />
-          Meetup
+          Podcast
         </Link>
         <Link
           href="/"
@@ -48,7 +45,7 @@ export default function TopicsPage() {
         >
           <span className="h-2 w-2 animate-pulse rounded-full bg-lime" />
           <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/70 md:text-xs">
-            Archive · Topic
+            All Episodes
           </span>
         </motion.div>
 
@@ -57,9 +54,9 @@ export default function TopicsPage() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="display-1 mt-6 text-[18vw] leading-[0.85] md:text-[10vw] lg:text-[9rem]"
+          className="display-1 mt-6 text-[16vw] leading-[0.85] md:text-[10vw] lg:text-[8.5rem]"
         >
-          Topic
+          Episodes
         </motion.h1>
 
         <motion.p
@@ -68,59 +65,76 @@ export default function TopicsPage() {
           transition={{ duration: 0.7, delay: 0.3 }}
           className="mt-6 max-w-xl text-base text-white/70 md:mt-8 md:text-lg"
         >
-          매주 다룬 주제와 이야기들.{" "}
-          <span className="text-white">기록을 모아둡니다.</span>
+          한 화에 하나의 질문.{" "}
+          <span className="text-white">지금까지 던진 질문들입니다.</span>
         </motion.p>
 
-        {/* Week grid */}
-        <div className="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-2 md:mt-20 lg:grid-cols-3">
-          {visibleWeeks.map((w, i) => (
-            <motion.button
-              key={w.week}
-              type="button"
-              onClick={() => setActive(w)}
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.6,
-                delay: 0.5 + i * 0.08,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className="group relative flex flex-col items-start gap-6 overflow-hidden rounded-3xl border border-lime/20 bg-white/[0.03] p-6 text-left transition hover:-translate-y-1 hover:border-lime/60 hover:bg-lime/5 md:p-7"
-            >
-              <div className="flex w-full items-center justify-between">
-                <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.3em] text-lime md:text-[11px]">
-                  {w.badge}
-                </span>
-                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40 md:text-[11px]">
-                  #{String(w.week).padStart(2, "0")}
-                </span>
-              </div>
-
-              <div className="flex w-full flex-col gap-2">
-                <span className="text-3xl font-extrabold leading-tight tracking-tight md:text-4xl">
-                  {w.titlePrefix && (
-                    <em className="not-italic text-lime">{w.titlePrefix} </em>
-                  )}
-                  {w.titleSuffix}
-                </span>
-                {w.subtitle && (
-                  <span className="text-sm text-white/55 md:text-base">
-                    {w.subtitle}
+        {/* Episode grid */}
+        <div className="mt-16 grid grid-cols-1 gap-4 md:mt-20 md:grid-cols-2 md:gap-5">
+          {episodesDesc.map((e, i) => {
+            const isNext = e.status === "next";
+            return (
+              <motion.button
+                key={e.ep}
+                type="button"
+                onClick={() => setActive(e)}
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.6,
+                  delay: 0.5 + i * 0.08,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className={`group relative flex min-h-[15rem] flex-col items-start gap-5 overflow-hidden rounded-3xl border p-6 text-left transition hover:-translate-y-1 md:p-8 ${
+                  isNext
+                    ? "border-lime/50 bg-lime/[0.07] hover:border-lime hover:bg-lime/10"
+                    : "border-lime/15 bg-white/[0.03] hover:border-lime/50 hover:bg-lime/5"
+                }`}
+              >
+                {/* Head: EP number + status */}
+                <div className="flex w-full items-center justify-between gap-3">
+                  <span className="font-mono text-xs font-semibold uppercase tracking-[0.28em] text-lime md:text-sm">
+                    {e.badge}
                   </span>
-                )}
-              </div>
+                  {isNext ? (
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-lime px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink">
+                      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-ink" />
+                      Next
+                    </span>
+                  ) : (
+                    <span className="rounded-full border border-white/20 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-white/40">
+                      Done
+                    </span>
+                  )}
+                </div>
 
-              <div className="mt-4 flex w-full items-center justify-between">
-                <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-white/40">
-                  {w.dateLabel}
-                </span>
-                <span className="text-2xl text-lime transition group-hover:translate-x-1">
-                  →
-                </span>
-              </div>
-            </motion.button>
-          ))}
+                {/* Question — 카드의 주인공 */}
+                <h2 className="text-balance text-2xl font-extrabold leading-[1.28] tracking-tight text-white md:text-[1.75rem]">
+                  {e.question}
+                </h2>
+
+                {/* Foot: title + date */}
+                <div className="mt-auto flex w-full items-end justify-between gap-4 pt-2">
+                  <div className="flex flex-col gap-1">
+                    <span className="text-sm font-semibold text-white/70">
+                      {e.titlePrefix && (
+                        <em className="not-italic text-lime">
+                          {e.titlePrefix}{" "}
+                        </em>
+                      )}
+                      {e.titleSuffix}
+                    </span>
+                    <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/35">
+                      {e.dateLabel}
+                    </span>
+                  </div>
+                  <span className="text-2xl text-lime transition group-hover:translate-x-1">
+                    →
+                  </span>
+                </div>
+              </motion.button>
+            );
+          })}
         </div>
 
         {/* Footer note */}
@@ -137,7 +151,7 @@ export default function TopicsPage() {
         </div>
       </div>
 
-      <WeekModal week={active} onClose={() => setActive(null)} />
+      <EpisodeModal episode={active} onClose={() => setActive(null)} />
     </main>
   );
 }

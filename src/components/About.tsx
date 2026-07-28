@@ -47,7 +47,7 @@ export default function About() {
           <div>
             <div className="mb-6 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-ink/50 md:text-xs">
               <span className="h-px w-12 bg-ink/30" />
-              <span>About the Meetup</span>
+              <span>About the Podcast</span>
             </div>
             <motion.h2
               initial={{ opacity: 0, y: 30 }}
