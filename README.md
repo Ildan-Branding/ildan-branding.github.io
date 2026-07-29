@@ -62,6 +62,17 @@ npm run build        # 정적 export → out/
 
 `available: true`가 되면 자동으로 `/topics` 그리드에 카드 추가 + Hero 카운터 갱신.
 
+## 발제 받기
+
+`/topics` 페이지 하단 입력창 → GitHub Issue 프리필 링크로 연결. 별도 백엔드/DB 없이 Issues가 저장소 역할을 한다.
+
+- 제출된 발제: [`[발제]` 이슈 목록](https://github.com/Ildan-Branding/ildan-branding.github.io/issues?q=is%3Aissue+is%3Aopen+%5B%EB%B0%9C%EC%A0%9C%5D+in%3Atitle)
+- 이슈 폼: [`.github/ISSUE_TEMPLATE/topic.yml`](.github/ISSUE_TEMPLATE/topic.yml)
+- 운영: 모임 직전에 비슷한 발제끼리 묶어 순서를 정하고, 다룬 발제는 close
+- 라벨로도 묶으려면 repo에 `topic` 라벨을 한 번 만들어두면 됨 (없으면 무시되고 제목 접두사 `[발제]`로만 구분)
+
+입력창에 표시되는 대상 화 번호는 [`src/data/episodes.ts`](src/data/episodes.ts)의 `proposalEp`(마지막 화 + 1)에서 자동 계산.
+
 ## License
 
 Private / internal — 모임 아카이브 용도.

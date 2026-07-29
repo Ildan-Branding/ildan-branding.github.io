@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
 import EpisodeModal from "@/components/EpisodeModal";
+import TopicProposal from "@/components/TopicProposal";
 import { episodesDesc, type Episode } from "@/data/episodes";
 
 export default function EpisodesPage() {
@@ -131,6 +132,9 @@ export default function EpisodesPage() {
             );
           })}
         </div>
+
+        {/* 다음 화 발제 입력 */}
+        <TopicProposal />
 
         {/* Footer note */}
         <div className="mt-20 flex items-center justify-between border-t border-white/10 pt-7">
