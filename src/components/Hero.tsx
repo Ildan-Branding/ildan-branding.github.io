@@ -1,11 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { useEffect, useRef } from "react";
-import { episodes, nextEpisode } from "@/data/episodes";
-
-const doneCount = episodes.filter((e) => e.status === "done").length;
+import TopicProposalCard from "@/components/TopicProposalCard";
 
 export default function Hero() {
   const glowRef = useRef<HTMLDivElement>(null);
@@ -138,46 +135,14 @@ export default function Hero() {
             </motion.span>
           </h1>
 
-          {/* 다음 에피소드 예고 */}
+          {/* 다음 화 발제 입력 */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
             className="flex w-full shrink-0 flex-col gap-4 md:w-auto md:pb-3"
           >
-            <Link
-              href="/topics"
-              className="group relative flex w-full max-w-[440px] flex-col gap-6 overflow-hidden rounded-3xl border border-lime/30 bg-lime/5 p-6 backdrop-blur-sm transition hover:border-lime hover:bg-lime/10 md:w-[300px] md:p-7 lg:w-[380px] lg:p-8 xl:w-[440px]"
-            >
-              <div className="flex items-center justify-between gap-3">
-                <span className="font-mono text-xs font-semibold uppercase tracking-[0.3em] text-lime md:text-sm">
-                  {nextEpisode.badge}
-                </span>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-lime px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink">
-                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-ink" />
-                  Next
-                </span>
-              </div>
-
-              <p className="text-balance text-xl font-extrabold leading-[1.3] tracking-tight text-white md:text-2xl lg:text-[1.7rem]">
-                {nextEpisode.question}
-              </p>
-
-              <div className="flex items-end justify-between gap-4 border-t border-lime/20 pt-5">
-                <div className="flex flex-col gap-1">
-                  <span className="text-sm font-semibold text-lime">
-                    {nextEpisode.date}
-                  </span>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">
-                    지난 에피소드 {doneCount}
-                  </span>
-                </div>
-                <span className="text-3xl leading-none text-lime transition group-hover:translate-x-1">
-                  →
-                </span>
-              </div>
-            </Link>
-            {/* 추후 다른 버튼 추가 자리 */}
+            <TopicProposalCard />
           </motion.div>
         </div>
 

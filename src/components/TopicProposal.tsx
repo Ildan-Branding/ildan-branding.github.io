@@ -3,39 +3,24 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { proposalEpBadge } from "@/data/episodes";
-
-const REPO = "Ildan-Branding/ildan-branding.github.io";
-
-/** 발제 목록 — 라벨 유무와 무관하게 동작하도록 제목 접두사로 검색 */
-const LIST_URL = `https://github.com/${REPO}/issues?q=${encodeURIComponent(
-  "is:issue is:open [발제] in:title sort:created-desc"
-)}`;
-
-const MAX_SUMMARY = 80;
-const MAX_WHY = 500;
+import {
+  MAX_SUMMARY,
+  MAX_WHY,
+  PROPOSAL_LIST_URL,
+  openProposal,
+} from "@/lib/proposal";
 
 export default function TopicProposal() {
   const [summary, setSummary] = useState("");
   const [why, setWhy] = useState("");
   const [opened, setOpened] = useState(false);
 
-  const trimmed = summary.trim();
-  const canSubmit = trimmed.length > 0;
-
-  const buildUrl = () => {
-    const params = new URLSearchParams({
-      template: "topic.yml",
-      title: `[발제] ${trimmed}`,
-      summary: trimmed,
-    });
-    if (why.trim()) params.set("why", why.trim());
-    return `https://github.com/${REPO}/issues/new?${params.toString()}`;
-  };
+  const canSubmit = summary.trim().length > 0;
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!canSubmit) return;
-    window.open(buildUrl(), "_blank", "noopener,noreferrer");
+    openProposal(summary, why);
     setOpened(true);
   };
 
@@ -75,7 +60,7 @@ export default function TopicProposal() {
           </p>
 
           <a
-            href={LIST_URL}
+            href={PROPOSAL_LIST_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-7 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-lime transition hover:underline"
