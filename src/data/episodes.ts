@@ -164,3 +164,12 @@ export const nextEpisode =
 
 /** 최신순 정렬 */
 export const episodesDesc = [...episodes].sort((a, b) => b.ep - a.ep);
+
+/**
+ * 발제를 받는 대상 화 번호.
+ * 예정된 화는 이미 구간이 정해져 있으므로 항상 마지막 화의 다음 번호가 된다.
+ */
+export const proposalEp = Math.max(...episodes.map((e) => e.ep)) + 1;
+
+/** 발제 대상 화의 배지 문자열 (ex: "EP.05") */
+export const proposalEpBadge = `EP.${String(proposalEp).padStart(2, "0")}`;

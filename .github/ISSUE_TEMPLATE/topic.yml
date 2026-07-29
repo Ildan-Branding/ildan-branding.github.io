@@ -1,0 +1,31 @@
+name: 발제 제안
+description: 다음 화에서 다루고 싶은 이야기를 남깁니다.
+title: "[발제] "
+labels: ["topic"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        모임 직전에 비슷한 주제끼리 묶어서 순서를 정합니다. 다듬지 않아도 되니 편하게 남겨주세요.
+  - type: input
+    id: summary
+    attributes:
+      label: 한 줄로 하면?
+      description: 제목에도 그대로 들어갑니다.
+      placeholder: 예) AI가 만든 결과물, 어디까지 내 것이라고 할 수 있을까
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: 왜 이 얘기를 하고 싶은지
+      description: 계기, 겪은 일, 궁금한 지점 — 한두 줄이면 충분합니다.
+    validations:
+      required: false
+  - type: input
+    id: link
+    attributes:
+      label: 참고 링크 (선택)
+      placeholder: https://
+    validations:
+      required: false
