@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { episodes, proposalEp, proposalEpBadge } from "@/data/episodes";
+import { episodes, proposalEpBadge } from "@/data/episodes";
 import { MAX_SUMMARY, isTopicsConfigured, submitTopic } from "@/lib/topics";
 
 const doneCount = episodes.filter((e) => e.status === "done").length;
@@ -21,14 +21,9 @@ export default function TopicProposalCard() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!canSubmit) return;
-    if (honeypot) {
-      setSummary("");
-      setStatus("done");
-      return;
-    }
     setStatus("submitting");
     try {
-      await submitTopic(summary, "", proposalEp);
+      await submitTopic(summary, "", honeypot);
       setSummary("");
       setStatus("done");
     } catch {

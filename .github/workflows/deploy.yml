@@ -36,8 +36,7 @@ jobs:
       - name: Build (Next.js static export)
         run: npm run build
         env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_TOPICS_API_URL: ${{ secrets.NEXT_PUBLIC_TOPICS_API_URL }}
 
       - name: Add .nojekyll
         run: touch out/.nojekyll

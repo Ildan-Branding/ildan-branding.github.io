@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { proposalEp, proposalEpBadge } from "@/data/episodes";
+import { proposalEpBadge } from "@/data/episodes";
 import {
   MAX_SUMMARY,
   MAX_WHY,
@@ -39,7 +39,7 @@ export default function TopicProposal() {
       return;
     }
     try {
-      const rows = await fetchTopics(proposalEp);
+      const rows = await fetchTopics();
       setTopics(rows);
     } catch {
       // 목록 로드 실패는 조용히 무시 — 입력창은 계속 동작해야 함
@@ -56,15 +56,9 @@ export default function TopicProposal() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!canSubmit) return;
-    if (honeypot) {
-      // 봇으로 추정 — 실제 등록 없이 성공한 것처럼만 처리
-      setSummary("");
-      setWhy("");
-      return;
-    }
     setStatus("submitting");
     try {
-      await submitTopic(summary, why, proposalEp);
+      await submitTopic(summary, why, honeypot);
       setSummary("");
       setWhy("");
       setStatus("success");

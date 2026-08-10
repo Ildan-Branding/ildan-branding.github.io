@@ -11,3 +11,7 @@ next-env.d.ts
 !public/**/*.png
 
 .vercel
+
+# Cloudflare Worker
+worker/node_modules/
+worker/.wrangler/

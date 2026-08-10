@@ -24,7 +24,7 @@ AI를 활용해 이것저것 해보는 가벼운 모임. 정해진 목표 없이
 - **Framework**: Next.js 14 (App Router, static export)
 - **Styling**: Tailwind CSS + custom design tokens
 - **Motion**: Framer Motion, Lenis
-- **Data**: Supabase (Postgres) — 발제(topic) 저장
+- **Data**: Notion ("💡 아이디어" DB) — 발제(topic) 저장, Cloudflare Worker([`worker/`](worker))가 프록시
 - **Hosting**: GitHub Pages (via GitHub Actions)
 - **Fonts**: Pretendard, JetBrains Mono, Space Grotesk
 
@@ -32,7 +32,7 @@ AI를 활용해 이것저것 해보는 가벼운 모임. 정해진 목표 없이
 
 ```bash
 npm install
-cp .env.local.example .env.local   # Supabase URL / anon key 채우기
+cp .env.local.example .env.local   # 배포된 Worker URL 채우기
 npm run dev          # http://localhost:3000
 npm run build        # 정적 export → out/
 ```
@@ -41,12 +41,12 @@ npm run build        # 정적 export → out/
 
 ## 배포
 
-`main` 브랜치에 push하면 [GitHub Actions](.github/workflows/deploy.yml)가 자동으로 빌드해서 GitHub Pages로 배포. 빌드 시 아래 두 GitHub Actions secret을 주입해 Supabase에 연결한다.
+두 개의 배포 파이프라인이 push 한 번으로 같이 돈다.
 
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- **프론트**: `main`에 push → [`deploy.yml`](.github/workflows/deploy.yml)이 빌드해서 GitHub Pages로 배포. 빌드 시 repo secret `NEXT_PUBLIC_TOPICS_API_URL`(Worker URL)을 주입.
+- **Worker**: `worker/` 변경분이 `main`에 push되면 [`deploy-worker.yml`](.github/workflows/deploy-worker.yml)이 Cloudflare에 배포.
 
-(Settings → Secrets and variables → Actions에서 등록. anon key는 공개돼도 되는 키지만 편의상 secret으로 관리)
+(둘 다 Settings → Secrets and variables → Actions에서 시크릿 등록)
 
 ## 콘텐츠 추가
 
@@ -73,22 +73,41 @@ npm run build        # 정적 export → out/
 
 ## 발제 받기
 
-Hero 카드(메인) + `/topics` 페이지 입력창에서 Supabase `topic_proposals` 테이블에 바로 저장된다. 로그인 없이 제출되고, 제출 즉시 그 자리에서 등록·목록 갱신까지 끝난다 (새 탭 없음).
+Hero 카드(메인) + `/topics` 페이지 입력창에서 제출하면 [Cloudflare Worker](worker)를 거쳐 이미 쓰고 있는 노션 워크스페이스의 **"일단, 브랜딩 — 아카이브" > "💡 아이디어" 데이터베이스**에 바로 쌓인다. 로그인 없이 제출되고, 제출 즉시 그 자리에서 등록·목록 갱신까지 끝난다 (새 탭 없음).
+
+정적 사이트는 Notion API 토큰을 직접 들고 있을 수 없어서, Worker가 토큰을 대신 들고 중계한다.
+
+**필드 매핑** (이미 그 DB에서 쓰는 속성 그대로 사용, 스키마 변경 없음)
+
+| 사이트 입력 | 노션 속성 |
+|---|---|
+| 한 줄 요약 | `제목` (title) |
+| 이유 (선택) | `내용` (text) |
+| — | `상태` = `제안` (고정) |
+| — | `공유자` = `웹사이트` (고정) |
+
+`주차` 연결은 자동으로 안 채운다 — 기존 항목들도 등록 시점엔 비워뒀다가 모임 직전에 정리하면서 채우는 식으로 쓰고 있어서, 그 흐름 그대로 유지.
 
 **최초 1회 세팅**
 
-1. [supabase.com](https://supabase.com)에서 프로젝트 생성 (무료 티어, organization당 2개까지)
-2. SQL Editor에서 [`supabase/schema.sql`](supabase/schema.sql) 실행 — `topic_proposals` 테이블 + RLS 정책(익명 insert/select 허용) 생성
-3. 프로젝트 Settings → API에서 `Project URL`, `anon public` key 확인
-4. 로컬: `.env.local`에 채우기 / 배포: repo secrets에 `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` 등록
+1. **Notion 통합(integration) 생성**: [notion.so/my-integrations](https://www.notion.so/my-integrations) → New integration → Internal Integration Secret 복사
+2. **DB에 통합 연결**: "💡 아이디어" 데이터베이스 페이지 우측 상단 `···` → Connections → 방금 만든 통합 추가 (이거 안 하면 API가 그 DB를 못 봄)
+3. **Cloudflare Worker 배포**
+   ```bash
+   cd worker
+   npx wrangler login
+   npx wrangler secret put NOTION_TOKEN   # 1번에서 복사한 값 붙여넣기
+   npx wrangler deploy
+   ```
+   배포 후 나오는 `https://ildan-branding-topics.<account>.workers.dev` 같은 URL을 기록
+4. **GitHub Actions로도 자동배포하려면** repo secrets에 등록: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `NOTION_TOKEN` — 이후 `worker/` 변경 push할 때마다 자동 배포
+5. **프론트에 Worker URL 연결**: 로컬 `.env.local` 또는 repo secret `NEXT_PUBLIC_TOPICS_API_URL`에 3번 URL 입력
 
 **운영**
 
-- 발제 확인·정리는 Supabase 대시보드의 Table Editor에서 (스프레드시트처럼 필터/정렬 가능)
-- 모임 직전에 비슷한 발제끼리 묶어 순서를 정하고, 다룬 발제는 행 삭제 또는 별도 컬럼으로 표시
-- 스팸 방지: 로그인 게이트는 없고, 폼에 허니팟 필드만 있음 — 트래픽이 커지면 Supabase Auth나 Turnstile 추가 고려
-
-입력창에 표시되는 대상 화 번호는 [`src/data/episodes.ts`](src/data/episodes.ts)의 `proposalEp`(마지막 화 + 1)에서 자동 계산.
+- 발제 확인·정리는 지금 쓰는 노션 화면 그대로 (필터/정렬/그룹 다 됨)
+- 모임 직전에 비슷한 발제끼리 `주차`로 묶고, `상태`를 `채택`/`보류`로 바꾸면 사이트 목록(`상태 = 제안`만 보여줌)에서 자동으로 빠짐
+- 스팸 방지: 로그인 게이트는 없고, 폼에 허니팟 필드가 있고 Worker에서도 한 번 더 검증함
 
 ## License
 

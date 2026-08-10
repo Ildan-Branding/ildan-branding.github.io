@@ -1,0 +1,12 @@
+name = "ildan-branding-topics"
+main = "src/index.js"
+compatibility_date = "2026-08-10"
+
+[vars]
+# "일단, 브랜딩 — 아카이브" > "💡 아이디어" 데이터베이스
+NOTION_DATABASE_ID = "eb0c9743-d799-4725-9bbe-d0322cd9a269"
+# 프론트 배포 origin. 로컬 개발도 허용하려면 콤마로 추가.
+ALLOWED_ORIGINS = "https://ildan-branding.github.io,http://localhost:3000"
+
+# NOTION_TOKEN은 시크릿이라 여기 안 넣는다.
+# wrangler secret put NOTION_TOKEN
