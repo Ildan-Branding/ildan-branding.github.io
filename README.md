@@ -24,6 +24,7 @@ AI를 활용해 이것저것 해보는 가벼운 모임. 정해진 목표 없이
 - **Framework**: Next.js 14 (App Router, static export)
 - **Styling**: Tailwind CSS + custom design tokens
 - **Motion**: Framer Motion, Lenis
+- **Data**: Supabase (Postgres) — 발제(topic) 저장
 - **Hosting**: GitHub Pages (via GitHub Actions)
 - **Fonts**: Pretendard, JetBrains Mono, Space Grotesk
 
@@ -31,13 +32,21 @@ AI를 활용해 이것저것 해보는 가벼운 모임. 정해진 목표 없이
 
 ```bash
 npm install
+cp .env.local.example .env.local   # Supabase URL / anon key 채우기
 npm run dev          # http://localhost:3000
 npm run build        # 정적 export → out/
 ```
 
+`.env.local`이 비어있어도 빌드/개발은 되지만 발제 입력창이 "설정 준비 중"으로 비활성화된다.
+
 ## 배포
 
-`main` 브랜치에 push하면 [GitHub Actions](.github/workflows/deploy.yml)가 자동으로 빌드해서 GitHub Pages로 배포. 별도 조작 필요 없음.
+`main` 브랜치에 push하면 [GitHub Actions](.github/workflows/deploy.yml)가 자동으로 빌드해서 GitHub Pages로 배포. 빌드 시 아래 두 GitHub Actions secret을 주입해 Supabase에 연결한다.
+
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+
+(Settings → Secrets and variables → Actions에서 등록. anon key는 공개돼도 되는 키지만 편의상 secret으로 관리)
 
 ## 콘텐츠 추가
 
@@ -64,12 +73,20 @@ npm run build        # 정적 export → out/
 
 ## 발제 받기
 
-`/topics` 페이지 하단 입력창 → GitHub Issue 프리필 링크로 연결. 별도 백엔드/DB 없이 Issues가 저장소 역할을 한다.
+Hero 카드(메인) + `/topics` 페이지 입력창에서 Supabase `topic_proposals` 테이블에 바로 저장된다. 로그인 없이 제출되고, 제출 즉시 그 자리에서 등록·목록 갱신까지 끝난다 (새 탭 없음).
 
-- 제출된 발제: [`[발제]` 이슈 목록](https://github.com/Ildan-Branding/ildan-branding.github.io/issues?q=is%3Aissue+is%3Aopen+%5B%EB%B0%9C%EC%A0%9C%5D+in%3Atitle)
-- 이슈 폼: [`.github/ISSUE_TEMPLATE/topic.yml`](.github/ISSUE_TEMPLATE/topic.yml)
-- 운영: 모임 직전에 비슷한 발제끼리 묶어 순서를 정하고, 다룬 발제는 close
-- 라벨로도 묶으려면 repo에 `topic` 라벨을 한 번 만들어두면 됨 (없으면 무시되고 제목 접두사 `[발제]`로만 구분)
+**최초 1회 세팅**
+
+1. [supabase.com](https://supabase.com)에서 프로젝트 생성 (무료 티어, organization당 2개까지)
+2. SQL Editor에서 [`supabase/schema.sql`](supabase/schema.sql) 실행 — `topic_proposals` 테이블 + RLS 정책(익명 insert/select 허용) 생성
+3. 프로젝트 Settings → API에서 `Project URL`, `anon public` key 확인
+4. 로컬: `.env.local`에 채우기 / 배포: repo secrets에 `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` 등록
+
+**운영**
+
+- 발제 확인·정리는 Supabase 대시보드의 Table Editor에서 (스프레드시트처럼 필터/정렬 가능)
+- 모임 직전에 비슷한 발제끼리 묶어 순서를 정하고, 다룬 발제는 행 삭제 또는 별도 컬럼으로 표시
+- 스팸 방지: 로그인 게이트는 없고, 폼에 허니팟 필드만 있음 — 트래픽이 커지면 Supabase Auth나 Turnstile 추가 고려
 
 입력창에 표시되는 대상 화 번호는 [`src/data/episodes.ts`](src/data/episodes.ts)의 `proposalEp`(마지막 화 + 1)에서 자동 계산.
 

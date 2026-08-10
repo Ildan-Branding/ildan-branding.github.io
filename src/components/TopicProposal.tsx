@@ -1,27 +1,77 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
-import { proposalEpBadge } from "@/data/episodes";
+import { useEffect, useState } from "react";
+import { proposalEp, proposalEpBadge } from "@/data/episodes";
 import {
   MAX_SUMMARY,
   MAX_WHY,
-  PROPOSAL_LIST_URL,
-  openProposal,
-} from "@/lib/proposal";
+  fetchTopics,
+  isTopicsConfigured,
+  submitTopic,
+  type TopicProposal as TopicProposalRow,
+} from "@/lib/topics";
+
+const dateFormatter = new Intl.DateTimeFormat("ko-KR", {
+  month: "long",
+  day: "numeric",
+  hour: "numeric",
+  minute: "2-digit",
+});
 
 export default function TopicProposal() {
   const [summary, setSummary] = useState("");
   const [why, setWhy] = useState("");
-  const [opened, setOpened] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
+  const [status, setStatus] = useState<
+    "idle" | "submitting" | "success" | "error"
+  >("idle");
 
-  const canSubmit = summary.trim().length > 0;
+  const [topics, setTopics] = useState<TopicProposalRow[]>([]);
+  const [listLoading, setListLoading] = useState(true);
 
-  const onSubmit = (e: React.FormEvent) => {
+  const configured = isTopicsConfigured();
+  const canSubmit = summary.trim().length > 0 && status !== "submitting";
+
+  const loadTopics = async () => {
+    if (!configured) {
+      setListLoading(false);
+      return;
+    }
+    try {
+      const rows = await fetchTopics(proposalEp);
+      setTopics(rows);
+    } catch {
+      // 목록 로드 실패는 조용히 무시 — 입력창은 계속 동작해야 함
+    } finally {
+      setListLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadTopics();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!canSubmit) return;
-    openProposal(summary, why);
-    setOpened(true);
+    if (honeypot) {
+      // 봇으로 추정 — 실제 등록 없이 성공한 것처럼만 처리
+      setSummary("");
+      setWhy("");
+      return;
+    }
+    setStatus("submitting");
+    try {
+      await submitTopic(summary, why, proposalEp);
+      setSummary("");
+      setWhy("");
+      setStatus("success");
+      loadTopics();
+    } catch {
+      setStatus("error");
+    }
   };
 
   return (
@@ -59,15 +109,45 @@ export default function TopicProposal() {
             순서를 정합니다.
           </p>
 
-          <a
-            href={PROPOSAL_LIST_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-7 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-lime transition hover:underline"
-          >
-            지금까지 올라온 발제 보기
-            <span aria-hidden>→</span>
-          </a>
+          {/* 등록된 발제 목록 */}
+          <div className="mt-10">
+            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/40">
+              등록된 발제 {configured && !listLoading ? `· ${topics.length}` : ""}
+            </span>
+            <div className="mt-4 flex flex-col gap-3">
+              {!configured && (
+                <p className="text-sm text-white/40">
+                  발제 저장소 설정 준비 중입니다.
+                </p>
+              )}
+              {configured && listLoading && (
+                <p className="text-sm text-white/40">불러오는 중…</p>
+              )}
+              {configured && !listLoading && topics.length === 0 && (
+                <p className="text-sm text-white/40">
+                  아직 없어요. 첫 발제를 남겨보세요.
+                </p>
+              )}
+              {topics.map((t) => (
+                <div
+                  key={t.id}
+                  className="rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4"
+                >
+                  <p className="text-sm font-semibold leading-relaxed text-white">
+                    {t.summary}
+                  </p>
+                  {t.why && (
+                    <p className="mt-1.5 text-sm leading-relaxed text-white/50">
+                      {t.why}
+                    </p>
+                  )}
+                  <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.15em] text-white/30">
+                    {dateFormatter.format(new Date(t.created_at))}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Right — 입력 */}
@@ -101,7 +181,10 @@ export default function TopicProposal() {
               type="text"
               value={summary}
               maxLength={MAX_SUMMARY}
-              onChange={(e) => setSummary(e.target.value)}
+              onChange={(e) => {
+                setSummary(e.target.value);
+                if (status !== "idle") setStatus("idle");
+              }}
               placeholder="AI가 만든 결과물, 어디까지 내 것이라고 할 수 있을까"
               className="mt-3 w-full rounded-2xl border border-white/12 bg-white/[0.04] px-4 py-4 text-base font-semibold text-white outline-none transition placeholder:font-normal placeholder:text-white/25 focus:border-lime/60 focus:bg-white/[0.06] md:text-lg"
             />
@@ -123,16 +206,32 @@ export default function TopicProposal() {
               className="mt-3 w-full resize-none rounded-2xl border border-white/12 bg-white/[0.04] px-4 py-4 text-base leading-relaxed text-white outline-none transition placeholder:text-white/25 focus:border-lime/60 focus:bg-white/[0.06]"
             />
 
+            {/* 허니팟 — 사람 눈엔 안 보이고 봇만 채움 */}
+            <input
+              type="text"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              className="absolute h-0 w-0 opacity-0"
+              style={{ left: "-9999px" }}
+            />
+
             <div className="mt-7 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <p className="font-mono text-[10px] leading-relaxed tracking-[0.12em] text-white/35">
-                GitHub 로그인 필요 · 열린 창에서 Submit까지 눌러야 등록됩니다
+                {configured
+                  ? "제출하면 바로 등록됩니다"
+                  : "발제 저장소 설정 준비 중입니다"}
               </p>
               <button
                 type="submit"
-                disabled={!canSubmit}
+                disabled={!canSubmit || !configured}
                 className="group inline-flex shrink-0 items-center justify-center gap-3 rounded-full bg-lime px-7 py-4 text-base font-bold text-ink transition enabled:hover:shadow-[0_20px_50px_-15px_rgba(200,255,61,0.6)] disabled:cursor-not-allowed disabled:bg-white/10 disabled:text-white/30"
               >
-                <span>발제 올리기</span>
+                <span>
+                  {status === "submitting" ? "등록하는 중…" : "발제 올리기"}
+                </span>
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
@@ -148,10 +247,14 @@ export default function TopicProposal() {
               </button>
             </div>
 
-            {opened && (
+            {status === "success" && (
               <p className="mt-5 rounded-2xl border border-lime/25 bg-lime/[0.07] px-4 py-3 text-sm leading-relaxed text-lime-soft">
-                GitHub 탭을 열었어요. 내용 확인하고{" "}
-                <span className="font-bold">Create</span> 누르면 등록됩니다.
+                등록됐어요. 왼쪽 목록에 반영됐습니다.
+              </p>
+            )}
+            {status === "error" && (
+              <p className="mt-5 rounded-2xl border border-red-400/25 bg-red-400/[0.07] px-4 py-3 text-sm leading-relaxed text-red-300">
+                등록에 실패했어요. 잠시 후 다시 시도해주세요.
               </p>
             )}
           </motion.form>
