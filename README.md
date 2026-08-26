@@ -13,11 +13,13 @@ AI를 활용해 이것저것 해보는 가벼운 모임. 정해진 목표 없이
 
 주차별 모임 아카이브는 [Topic 페이지](https://ildan-branding.github.io/topics/)에서 확인.
 
-| Week | 날짜 | 주제 |
+| EP | 날짜 | 그 화의 질문 |
 |---|---|---|
-| 01 | 6월 1일 (일) 20:30 | 일단, 브랜딩 |
-| 02 | 6월 23일 (화) 21:00 | 일단, 브레인스토밍 |
-| 03 | 7월 7일 (화) 21:00 | 일단, 방향 |
+| 01 | 6월 1일 (일) 20:30 | AI로 만든 걸 "서비스"라 부를 수 있을까? |
+| 02 | 6월 23일 (화) 21:00 | 우리는 일단 뭘 만들어야 할까? |
+| 03 | 7월 7일 (화) 21:00 | 여러 갈래 중 무엇부터 좁혀야 할까? |
+| 04 | 7월 28일 (화) 21:00 | 우리는 AI 테크니션이 되어가고 있는 건 아닐까? |
+| 05 | 8월 25일 (화) 21:00 | 모델이 상향평준화되면, 그래서 뭐가 남나? |
 
 ## Stack
 
@@ -41,26 +43,28 @@ npm run build        # 정적 export → out/
 
 ## 콘텐츠 추가
 
-새 주차 아카이브는 [`src/data/weeks.ts`](src/data/weeks.ts)에 항목 추가.
+새 화는 [`src/data/episodes.ts`](src/data/episodes.ts)의 `episodes` 배열에 항목 추가.
 
 ```ts
 {
-  week: N,
-  badge: "Week 0N",
+  ep: N,
+  badge: "EP.0N",
   date: "M월 D일 (요일) 오후 H:MM",
-  dateLabel: "N 번째 모임",
-  titlePrefix: "일단,",
-  titleSuffix: "…",
-  subtitle: "…",
-  topics: [
-    { num: "01", title: "…", desc: "" },
+  dateLabel: "N 번째 에피소드",
+  question: "그 화가 던지는 단 하나의 질문",   // 카드·모달의 주인공
+  copy: "질문을 받쳐주는 카피 한 줄",
+  segments: withOpening([                      // 공통 오프닝(00:00·00:10) 뒤에 붙는다
+    { at: "00:20", title: "…", desc: "…", highlight: "desc 중 강조할 구문" },
     // …
-  ],
-  available: true,
+  ]),
+  takeaway: "끝난 화가 남긴 한 줄",            // 선택 — done인 화에만 노출
+  status: "next",                              // 예정된 화는 하나만 next
 }
 ```
 
-`available: true`가 되면 자동으로 `/topics` 그리드에 카드 추가 + Hero 카운터 갱신.
+- 배열에 추가하면 `/topics` 그리드 카드 + Hero의 다음 화 예고 + 지난 화 카운터가 자동 갱신된다.
+- 새 화를 `next`로 올릴 때 이전 `next` 화는 `done`으로 내려준다. `nextEpisode`는 `status: "next"`인 **첫 번째** 화를 잡는다.
+- 발제 입력창의 대상 화 번호(`proposalEp`)는 마지막 화 번호 + 1로 자동 계산된다.
 
 ## 발제 받기
 
