@@ -159,7 +159,7 @@ export const episodes: Episode[] = [
   {
     ep: 5,
     badge: "EP.05",
-    date: "8월 25일 (화) 오후 9:00",
+    date: "8월 27일 (목) 오후 9:00",
     dateLabel: "다섯 번째 에피소드",
     question: "모델이 상향평준화되면, 그래서 뭐가 남나?",
     copy: "월드모델 · 온톨로지 · 소버린 AI — 셋 다 모델 바깥의 맥락 이야기다.",
