@@ -94,8 +94,15 @@ export default function EpisodesPage() {
               >
                 {/* Head: EP number + status */}
                 <div className="flex w-full items-center justify-between gap-3">
-                  <span className="font-mono text-xs font-semibold uppercase tracking-[0.28em] text-lime md:text-sm">
-                    {e.badge}
+                  <span className="flex items-center gap-2">
+                    <span className="font-mono text-xs font-semibold uppercase tracking-[0.28em] text-lime md:text-sm">
+                      {e.badge}
+                    </span>
+                    {e.material && (
+                      <span className="rounded-full border border-lime/40 px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.16em] text-lime/80">
+                        자료
+                      </span>
+                    )}
                   </span>
                   {isNext ? (
                     <span className="inline-flex items-center gap-1.5 rounded-full bg-lime px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink">

@@ -19,6 +19,8 @@ export type Episode = {
   segments: Segment[];
   /** 끝난 화가 남긴 한 줄 (종료된 화에만 노출) */
   takeaway?: string;
+  /** 그 화의 진행 자료 — public/ 아래 정적 HTML */
+  material?: { href: string; label: string };
   status: "next" | "done";
 };
 
@@ -242,6 +244,7 @@ export const episodes: Episode[] = [
         highlight: "각자 좌표 하나씩",
       },
     ]),
+    material: { href: "/materials/ep06.html", label: "EP.06 자료 보기" },
     status: "next",
   },
 ];

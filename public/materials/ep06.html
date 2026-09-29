@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0A0A0A">
+<title>EP.06 우리는 어디쯤인가</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+/* 레이아웃: 한 패널에 한 키워드. 잉크 바탕 + 라임은 형광펜·마커로만, 핵심 명제는 페이퍼 반전 슬랩 */
+:root{
+  --ink:#0A0A0A; --ink2:#121212; --ink3:#1A1A1A; --line:#2A2A28;
+  --paper:#F4F1E8; --muted:#A09E95; --faint:#65635D;
+  --lime:#C8FF3D; --lime-soft:#E4FF8A; --lime-dim:rgba(200,255,61,.12);
+  --warn:#FF6B5B; --warn-dim:rgba(255,107,91,.12);
+  --sans:"Gothic A1","Pretendard","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --maxw:1120px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--sans);font-size:17px;line-height:1.7;
+  -webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:break-word}
+.wrap{max-width:var(--maxw);margin:0 auto;padding-inline:20px}
+a{color:var(--lime);text-decoration:none;border-bottom:1px solid rgba(200,255,61,.3)}
+a:hover{border-bottom-color:var(--lime)}
+:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
+::selection{background:var(--lime);color:var(--ink)}
+.mk{background:var(--lime);color:var(--ink);padding:0 .14em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.hl{color:var(--lime)}
+.mono{font-family:var(--mono)}
+
+/* 내비 */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(10,10,10,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;gap:6px;overflow-x:auto;padding-block:10px;scrollbar-width:none}
+.nav .wrap::-webkit-scrollbar{display:none}
+.nav a{flex:0 0 auto;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:700;color:var(--muted);white-space:nowrap}
+.nav a b{font-family:var(--mono);font-weight:500;color:var(--lime);margin-right:6px}
+.nav a:hover{border-color:var(--lime);color:var(--paper)}
+
+/* 커버 */
+.cover{padding-block:72px 56px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;font-weight:900;font-size:16px;letter-spacing:-.02em}
+.brand .ast{color:var(--lime)}
+.brand .ep{margin-left:auto;font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.2em;color:var(--faint)}
+.cover h1{margin:48px 0 0;font-weight:900;font-size:clamp(36px,7.4vw,84px);line-height:1.1;letter-spacing:-.045em;text-wrap:balance}
+.cover h1 em{font-style:normal;color:var(--lime)}
+.kw{display:flex;flex-wrap:wrap;gap:8px;margin-top:34px}
+.kw span{font-family:var(--mono);font-size:13px;font-weight:500;letter-spacing:.06em;padding:7px 14px;border:1px solid var(--lime);color:var(--lime);border-radius:999px}
+.meta{display:flex;flex-wrap:wrap;gap:8px 28px;margin-top:30px;font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;color:var(--muted)}
+.meta b{color:var(--paper);font-weight:500}
+
+/* 페이퍼 반전 슬랩 */
+.slab{background:var(--paper);color:var(--ink);padding-block:56px}
+.slab .lbl{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.24em;color:#6B685F}
+.slab p{margin:14px 0 0;font-weight:900;font-size:clamp(26px,4.6vw,50px);line-height:1.22;letter-spacing:-.04em;text-wrap:balance}
+.slab .sub{margin-top:14px;font-size:16px;font-weight:500;letter-spacing:0;color:#55534C;line-height:1.6}
+
+/* 파트 */
+.part{padding-block:72px;border-bottom:1px solid var(--line)}
+.ph{display:grid;grid-template-columns:auto 1fr;gap:6px 20px;align-items:end;margin-bottom:40px}
+.ph .n{font-family:var(--mono);font-weight:700;font-size:clamp(48px,9vw,96px);line-height:.8;color:var(--lime);letter-spacing:-.05em}
+.ph .t{font-weight:900;font-size:clamp(28px,5vw,52px);line-height:1.1;letter-spacing:-.04em;text-wrap:balance}
+.ph .q{grid-column:1/-1;font-size:17px;color:var(--muted);font-weight:500;margin-top:10px}
+
+.blk{margin-top:56px}
+.blk:first-of-type{margin-top:0}
+.bh{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.bh h3{margin:0;font-weight:800;font-size:clamp(22px,3.2vw,30px);letter-spacing:-.03em;line-height:1.25;text-wrap:balance}
+.bh .tag{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.14em;color:var(--faint);text-transform:uppercase}
+.lead{font-size:18px;color:var(--muted);max-width:60ch;margin:0 0 20px}
+.lead b{color:var(--paper);font-weight:700}
+
+/* 숫자 타일 */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.tile{background:var(--ink2);padding:22px 22px 20px;min-width:0}
+.tile .k{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+.tile .v{font-family:var(--mono);font-weight:700;font-size:clamp(34px,5vw,48px);line-height:1.05;letter-spacing:-.03em;margin-top:10px;color:var(--lime);font-variant-numeric:tabular-nums}
+.tile .v small{font-size:.42em;color:var(--muted);font-weight:500;letter-spacing:0;margin-left:4px}
+.tile .d{margin-top:8px;font-size:14px;color:var(--muted);line-height:1.5}
+.tile .d b{color:var(--paper);font-weight:700}
+.tile.warn .v{color:var(--warn)}
+
+/* 키워드 카드 */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.card{border:1px solid var(--line);background:var(--ink2);padding:20px;min-width:0}
+.card h4{margin:0;font-weight:800;font-size:20px;letter-spacing:-.02em}
+.card h4 small{display:block;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.12em;color:var(--faint);margin-top:3px}
+.card p{margin:10px 0 0;font-size:15px;color:var(--muted);line-height:1.6}
+.card p b{color:var(--paper);font-weight:700}
+.card.hot{border-color:var(--lime);background:var(--lime-dim)}
+
+/* 두 칸 대비 */
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.col{border:1px solid var(--line);padding:22px;background:var(--ink2);min-width:0}
+.col .lbl{font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.18em;color:var(--muted)}
+.col h4{margin:6px 0 14px;font-weight:900;font-size:22px;letter-spacing:-.03em}
+.col ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px}
+.col li{font-size:16px;font-weight:600;padding-left:18px;position:relative;line-height:1.45}
+.col li::before{content:"";position:absolute;left:0;top:.62em;width:8px;height:2px;background:var(--faint)}
+.col.in{border-top:3px solid var(--muted)}
+.col.out{border-top:3px solid var(--lime)}
+.col.out li::before{background:var(--lime)}
+@media (max-width:680px){.vs{grid-template-columns:1fr}}
+
+/* 가로 막대 */
+.bars{display:flex;flex-direction:column;gap:12px;max-width:760px}
+.bar{display:grid;grid-template-columns:150px 1fr 64px;gap:14px;align-items:center}
+.bar .nm{font-size:14.5px;font-weight:700;min-width:0}
+.bar .tr{height:14px;background:var(--ink3);position:relative}
+.bar .tr i{position:absolute;inset:0 auto 0 0;background:var(--faint)}
+.bar.me .tr i{background:var(--lime)}
+.bar .vl{font-family:var(--mono);font-weight:700;font-size:15px;text-align:right;font-variant-numeric:tabular-nums}
+.bar.me .vl{color:var(--lime)}
+.cap{margin-top:12px;font-size:13px;color:var(--faint);line-height:1.6;max-width:70ch}
+@media (max-width:520px){.bar{grid-template-columns:1fr 56px;gap:4px 10px}.bar .tr{grid-column:1/-1;grid-row:2}}
+
+/* 사다리 */
+.ladder{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.step{border:1px solid var(--line);background:var(--ink2);padding:16px 14px 18px;position:relative;min-width:0}
+.step .lv{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--faint)}
+.step b{display:block;margin-top:6px;font-weight:900;font-size:18px;letter-spacing:-.02em}
+.step span{display:block;margin-top:4px;font-size:13px;color:var(--muted);line-height:1.45}
+.step.now{border-color:var(--lime);background:var(--lime-dim)}
+.step.now .lv{color:var(--lime)}
+.step.goal{border-style:dashed}
+.pin{display:inline-block;margin-top:10px;font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.06em;padding:3px 8px;background:var(--lime);color:var(--ink)}
+.pin.ghost{background:transparent;color:var(--muted);border:1px dashed var(--faint)}
+@media (max-width:760px){.ladder{grid-template-columns:1fr}}
+
+/* 인과 사슬 */
+.chain{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.link{border:1px solid var(--line);background:var(--ink2);padding:22px;min-width:0;position:relative}
+.link .id{font-family:var(--mono);font-weight:700;font-size:34px;color:var(--lime);line-height:1}
+.link h4{margin:10px 0 0;font-weight:900;font-size:22px;letter-spacing:-.03em}
+.link p{margin:8px 0 0;font-size:15px;color:var(--muted);line-height:1.55}
+.link p b{color:var(--paper)}
+.sum{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:12px}
+.sum div{background:var(--ink);padding:14px 18px;font-size:15px;font-weight:700;min-width:0}
+.sum div span{display:block;font-family:var(--mono);font-size:12px;color:var(--faint);font-weight:500;letter-spacing:.08em}
+.sum div.win{background:var(--lime);color:var(--ink)}
+.sum div.win span{color:#3C4A12}
+@media (max-width:760px){.chain,.sum{grid-template-columns:1fr}}
+
+/* 표 */
+.tw{overflow-x:auto;border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:15px}
+th,td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);background:var(--ink2)}
+tbody tr:last-child td,tbody tr:last-child th{border-bottom:0}
+tbody th{font-weight:800}
+td.n{font-family:var(--mono);font-weight:700;font-variant-numeric:tabular-nums;color:var(--lime);white-space:nowrap}
+td small,th small{display:block;font-size:12.5px;color:var(--faint);font-weight:400;margin-top:2px}
+
+/* 인용 */
+.quotes{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.qt{border-left:3px solid var(--line);padding:4px 0 4px 16px}
+.qt p{margin:0;font-weight:700;font-size:17px;line-height:1.5;letter-spacing:-.01em}
+.qt cite{display:block;margin-top:8px;font-style:normal;font-family:var(--mono);font-size:12px;color:var(--faint);letter-spacing:.04em}
+.qt.claim{border-left-color:var(--lime)}
+
+/* 주의 / 반론 */
+.warnbox{border:1px solid rgba(255,107,91,.4);background:var(--warn-dim);padding:22px}
+.warnbox .lbl{font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.2em;color:var(--warn)}
+.warnbox ol{margin:12px 0 0;padding:0;list-style:none;counter-reset:w;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px 22px}
+.warnbox li{counter-increment:w;min-width:0}
+.warnbox li b{display:block;font-weight:900;font-size:17px}
+.warnbox li b::before{content:counter(w) "  ";font-family:var(--mono);color:var(--warn)}
+.warnbox li span{display:block;margin-top:4px;font-size:14.5px;color:var(--muted);line-height:1.5}
+
+/* 결론 한 줄 */
+.verdict{margin-top:40px;padding:26px 26px;background:var(--lime);color:var(--ink)}
+.verdict .lbl{font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.2em;color:#3C4A12}
+.verdict p{margin:8px 0 0;font-weight:900;font-size:clamp(22px,3.4vw,32px);line-height:1.3;letter-spacing:-.035em;text-wrap:balance}
+
+/* 토론 */
+.talk{margin-top:40px;border:1px dashed var(--faint);padding:22px 24px}
+.talk .lbl{font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.2em;color:var(--lime)}
+.talk ol{margin:12px 0 0;padding-left:22px;display:flex;flex-direction:column;gap:10px}
+.talk li{font-size:17px;font-weight:600;line-height:1.5}
+.talk li::marker{font-family:var(--mono);color:var(--lime)}
+
+/* 좌표 */
+.axes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.ax{border:1px solid var(--line);background:var(--ink2);padding:20px;min-width:0}
+.ax h4{margin:0;font-weight:900;font-size:20px;letter-spacing:-.02em}
+.ax p{margin:6px 0 16px;font-size:14.5px;color:var(--muted)}
+.dots{display:flex;justify-content:space-between;gap:4px}
+.dots span{flex:1;height:30px;border:1px solid var(--line);display:grid;place-items:center;font-family:var(--mono);font-size:12px;color:var(--faint)}
+.dots span:last-child{border-color:var(--lime);color:var(--lime)}
+.ends{display:flex;justify-content:space-between;margin-top:6px;font-size:12px;color:var(--faint)}
+@media (max-width:760px){.axes{grid-template-columns:1fr}}
+
+/* 출처 */
+footer{padding-block:56px 80px}
+footer .fl{font-weight:900;font-size:16px}
+footer .fl .ast{color:var(--lime)}
+footer p{font-size:13.5px;color:var(--faint);max-width:72ch;line-height:1.7}
+.srcs{margin-top:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px}
+.srcs h6{margin:0 0 8px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.18em;color:var(--muted)}
+.srcs ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:5px}
+.srcs li{font-size:13px;line-height:1.5}
+.srcs a{color:var(--muted);border-bottom-color:var(--line)}
+.srcs a:hover{color:var(--lime)}
+</style>
+</head>
+<body>
+<nav class="nav" aria-label="파트 이동">
+  <div class="wrap">
+    <a href="#words"><b>00</b>키워드</a>
+    <a href="#astra"><b>01</b>아스트라</a>
+    <a href="#agi"><b>02</b>AGI</a>
+    <a href="#mcp"><b>03</b>MCP</a>
+    <a href="#api"><b>04</b>API</a>
+    <a href="#where"><b>05</b>어디쯤</a>
+  </div>
+</nav>
+
+<header class="cover">
+  <div class="wrap">
+    <div class="brand">일단, 브랜딩<span class="ast">*</span><span class="ep">EP.06 · 예정</span></div>
+    <h1>GPT-6까지 왔는데,<br>우리는 <em>어디쯤</em>인가?</h1>
+    <div class="kw" aria-label="이번 화 키워드">
+      <span>GPT-6 ASTRA</span><span>AGI</span><span>MCP</span><span>API</span><span>COMPUTER USE</span>
+    </div>
+    <div class="meta">
+      <span>진행 <b>수다 · 발표 없음</b></span>
+      <span>러닝타임 <b>약 2시간</b></span>
+      <span>기준일 <b>2026.09.29</b></span>
+    </div>
+  </div>
+</header>
+
+<section class="slab" aria-label="오늘의 한 줄">
+  <div class="wrap">
+    <div class="lbl">오늘의 한 줄</div>
+    <p>모델이 삼킨 건 <span class="mk">능력</span>.<br>밖에 남은 건 <span class="mk">권한과 청구서</span>.</p>
+    <div class="sub">모델이 스스로 일하게 된 지금, 무엇이 모델 안으로 들어가고 무엇이 밖에 남아 값이 붙는지를 본다.</div>
+  </div>
+</section>
+
+<!-- 00 키워드 -->
+<section class="part" id="words">
+  <div class="wrap">
+    <div class="ph"><div class="n">00</div><div class="t">오늘 쓸 단어</div>
+      <div class="q">API와 MCP를 구분하면 나머지가 다 읽힌다</div></div>
+
+    <div class="cards">
+      <div class="card"><h4>API<small>APPLICATION PROGRAMMING INTERFACE</small></h4>
+        <p>남의 시스템에 뚫린 <b>창구</b>. 메뉴판은 <b>사람</b>이 읽고, 코드는 미리 짜둔다.</p></div>
+      <div class="card hot"><h4>MCP<small>MODEL CONTEXT PROTOCOL</small></h4>
+        <p>그 창구를 <b>모델이 실행 중에</b> 스스로 찾고 고르게 하는 규격. 메뉴판을 모델이 읽는다.</p></div>
+      <div class="card hot"><h4>컴퓨터 유즈<small>COMPUTER USE</small></h4>
+        <p>API도 MCP도 없이 모델이 <b>화면을 보고 클릭</b>한다. 창구 대신 사람처럼 줄을 선다.</p></div>
+      <div class="card"><h4>AGI<small>ARTIFICIAL GENERAL INTELLIGENCE</small></h4>
+        <p><b>합의된 정의가 없다.</b> 논쟁의 절반은 능력보다 이 단어의 경계에서 나온다.</p></div>
+      <div class="card"><h4>재기드 AGI<small>JAGGED AGI</small></h4>
+        <p>어떤 일은 사람보다 훨씬 잘하고 어떤 일은 훨씬 못하는, <b>들쭉날쭉한</b> 상태.</p></div>
+      <div class="card"><h4>x402 · ACP<small>AGENT PAYMENTS</small></h4>
+        <p>에이전트가 <b>호출 한 번마다 값을 치르게</b> 하는 결제 규격.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 01 아스트라 -->
+<section class="part" id="astra">
+  <div class="wrap">
+    <div class="ph"><div class="n">01</div><div class="t">GPT-6 아스트라</div>
+      <div class="q">EP.05에서 “훈련 중단”이라 다룬 그 모델, 한 달 만에 출시</div></div>
+
+    <div class="blk">
+      <div class="bh"><h3>뛴 건 <span class="mk">조작 능력</span></h3><span class="tag">화면을 보고 손을 움직이는 힘</span></div>
+      <div class="tiles">
+        <div class="tile"><div class="k">OSWorld 2.0</div><div class="v">72.6<small>%</small></div>
+          <div class="d">Sol 65.7 · Opus 5 70.2<br>실제 OS에서 과제 완수</div></div>
+        <div class="tile"><div class="k">ScreenSpot Pro</div><div class="v">92.7<small>%</small></div>
+          <div class="d">이전 76.9<br>화면에서 맞는 버튼 찾기</div></div>
+        <div class="tile"><div class="k">AutomationBench</div><div class="v">41.4<small>%</small></div>
+          <div class="d">이전 18.1 · <b>2배 이상</b><br>여러 단계 자동화 연쇄</div></div>
+        <div class="tile"><div class="k">과제 소요 시간</div><div class="v">40<small>분</small></div>
+          <div class="d">Sol 75분 · <b>약 47% 단축</b></div></div>
+      </div>
+    </div>
+
+    <div class="blk">
+      <div class="bh"><h3>코딩은 <span class="mk">무승부</span></h3><span class="tag">압도가 아니라 동률</span></div>
+      <div class="tw"><table>
+        <thead><tr><th>벤치마크</th><th>아스트라</th><th>Claude Opus 5</th><th>경쟁 모델</th></tr></thead>
+        <tbody>
+          <tr><th>Deep SWE</th><td class="n">74.1</td><td class="n">73.7</td><td class="n">73.8<small>Gemini Flash</small></td></tr>
+          <tr><th>FrontierCode 1.1</th><td class="n">53.3</td><td class="n">53.4</td><td class="n">53.5<small>Fable 5</small></td></tr>
+          <tr><th>AA Intelligence Index</th><td class="n">53</td><td class="n">—</td><td class="n">53<small>Fable 5.1</small></td></tr>
+          <tr><th>AA Coding Agent Index</th><td class="n">62</td><td class="n">60</td><td class="n">62<small>Fable 5.1</small></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="blk">
+      <div class="bh"><h3>대신 <span class="mk">적게 돌고</span> 끝낸다</h3><span class="tag">GDPval 과제당 턴 수</span></div>
+      <div class="bars">
+        <div class="bar me"><span class="nm">GPT-6 아스트라</span><span class="tr"><i style="width:40%"></i></span><span class="vl">24</span></div>
+        <div class="bar"><span class="nm">GPT-5.6 Sol</span><span class="tr"><i style="width:75%"></i></span><span class="vl">45</span></div>
+        <div class="bar"><span class="nm">Claude Fable 5.1</span><span class="tr"><i style="width:100%"></i></span><span class="vl">60</span></div>
+        <div class="bar"><span class="nm">Claude Opus 5</span><span class="tr"><i style="width:100%"></i></span><span class="vl">60</span></div>
+      </div>
+      <div class="cap">최대 추론 설정 기준. 막대 길이는 60턴을 100%로 둔 비율. 적은 턴이 곧 좋은 결과는 아니다(아래 02 참고).</div>
+    </div>
+
+    <div class="blk">
+      <div class="bh"><h3>문서를 <span class="mk">만들어</span> 온다</h3></div>
+      <div class="cards">
+        <div class="card"><h4>템플릿 준수</h4><p>기존 양식을 지키며 <b>문서·시트·슬라이드</b> 산출</p></div>
+        <div class="card"><h4>데이터 직접 처리</h4><p>CSV·스프레드시트를 열어 <b>정렬·필터·요약</b></p></div>
+        <div class="card hot"><h4>발제와의 접점</h4><p>“MCP로 안 붙였는데 알아서 하더라” 가 <b>바로 이 지점</b></p></div>
+      </div>
+    </div>
+
+    <div class="blk">
+      <div class="bh"><h3>가격은 <span class="mk">반대로</span></h3><span class="tag">100만 토큰당</span></div>
+      <div class="tiles">
+        <div class="tile"><div class="k">입력</div><div class="v">$10</div><div class="d">캐시 입력 $1</div></div>
+        <div class="tile"><div class="k">출력</div><div class="v">$50</div><div class="d">배치 절반 · Fast 모드 2배</div></div>
+        <div class="tile"><div class="k">시장 평균 단가</div><div class="v" style="color:var(--paper)">~$1.17</div><div class="d">10주 새 $2.04에서 하락</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 AGI -->
+<section class="part" id="agi">
+  <div class="wrap">
+    <div class="ph"><div class="n">02</div><div class="t">그래서 이게 AGI인가</div>
+      <div class="q">질문을 바꾸자. AGI가 왔나, 가 아니라 왜 지금 이 말이 나오나</div></div>
+
+    <div class="blk">
+      <div class="bh"><h3>OpenAI 자신의 정의</h3><span class="tag">OpenAI 헌장</span></div>
+      <div class="slab" style="padding:28px 26px">
+        <p style="margin:0;font-size:clamp(20px,3vw,28px)">“대부분의 <span class="mk">경제적 가치가 있는 일</span>에서 인간을 능가하는 고도로 자율적인 시스템”</p>
+      </div>
+    </div>
+
+    <div class="blk">
+      <div class="bh"><h3>OpenAI의 5단계</h3><span class="tag">2024.07 사내 공유 · 블룸버그 확인</span></div>
+      <div class="ladder">
+        <div class="step"><div class="lv">LV.1</div><b>챗봇</b><span>대화</span></div>
+        <div class="step"><div class="lv">LV.2</div><b>추론자</b><span>복잡한 문제 풀이</span></div>
+        <div class="step now"><div class="lv">LV.3</div><b>에이전트</b><span>스스로 실행</span><span class="pin">벤치마크가 보여주는 곳</span></div>
+        <div class="step"><div class="lv">LV.4</div><b>혁신가</b><span>새로운 발견</span></div>
+        <div class="step goal"><div class="lv">LV.5</div><b>조직</b><span>회사를 굴린다 = AGI</span><span class="pin ghost">브록만의 주장</span></div>
+      </div>
+      <div class="cap">단계 배치는 공개 벤치마크(조작·자동화 지표)를 근거로 한 해석이다. OpenAI가 아스트라의 단계를 공식 발표한 것은 아니다.</div>
+    </div>
+
+    <div class="blk">
+      <div class="bh"><h3>자기 기준에서 <span class="mk">미끄러졌다</span></h3></div>
+      <div class="tiles">
+        <div class="tile warn"><div class="k">GDPval-AA v2</div><div class="v">−45<small>Elo</small></div>
+          <div class="d">44개 직업의 <b>경제적 가치 과제</b><br>전작 Sol 대비 하락</div></div>
+        <div class="tile"><div class="k">그런데 정의는</div><div class="v" style="font-size:clamp(22px,3vw,30px);color:var(--paper)">“경제적 가치”</div>
+          <div class="d">AGI를 재는 바로 그 잣대에서 뒷걸음</div></div>
+      </div>
+    </div>
+
+    <div class="blk">
+      <div class="bh"><h3>선언과 반박</h3></div>
+      <div class="quotes">
+        <div class="qt claim"><p>“AGI 시대에 온 것을 환영한다.”</p><cite>그렉 브록만 · OpenAI 사장 · 9.3~4</cite></div>
+        <div class="qt"><p>“여덟 살짜리도 하는 걸 못 하는 사례를 못 찾으면 모자를 먹겠다.”</p><cite>토비 월시 · UNSW AI연구소</cite></div>
+        <div class="qt"><p>“OpenAI 자신의 정의가 이 주장의 결함을 드러낸다.”</p><cite>레베카 존슨 · 시드니대</cite></div>
+        <div class="qt"><p>“잘 정의된 용어가 아니다. 지금은 재기드 AGI의 시대.”</p><cite>이선 몰릭</cite></div>
+      </div>
+    </div>
+
+    <div class="blk">
+      <div class="bh"><h3>왜 지금 이 말이 나오나</h3><span class="tag">가설 셋</span></div>
+      <div class="cards">
+        <div class="card"><h4>일의 종류가 바뀜</h4><p>“말을 잘한다” 에서 <b>“일을 끝낸다”</b> 로</p></div>
+        <div class="card"><h4>발판이 안 보임</h4><p>사람이 깔던 플러그인·툴 정의가 줄자 <b>스스로 하는 것처럼</b> 보인다</p></div>
+        <div class="card"><h4>상업적 타이밍</h4><p>정의 없는 단어일수록 <b>투자·계약·규제 협상</b>에서 값이 나간다</p></div>
+      </div>
+    </div>
+
+    <div class="talk"><span class="lbl">토론</span><ol>
+      <li>여덟 살짜리는 하는데 아스트라는 못 하는 것, 각자 하나씩</li>
+      <li>벤치마크 말고, 내 업무에서 세대 차이를 느낀 순간이 있었나</li>
+    </ol></div>
+  </div>
+</section>
+
+<!-- 03 MCP -->
+<section class="part" id="mcp">
+  <div class="wrap">
+    <div class="ph"><div class="n">03</div><div class="t">MCP는 내재화되는가</div>
+      <div class="q">발제: 알아서 화면 쓰고 파일 열면, MCP는 필요 없어지는 것 아닌가</div></div>
+
+    <div class="blk">
+      <div class="bh"><h3>사실은 <span class="mk">반대</span></h3><span class="tag">아스트라는 MCP를 더 깊이 쓴다</span></div>
+      <div class="cards">
+        <div class="card"><h4>Responses API</h4><p>MCP 도구를 <b>발견하고 호출</b></p></div>
+        <div class="card"><h4>커넥터</h4><p>OpenAI가 관리하는 <b>MCP 래퍼</b></p></div>
+        <div class="card"><h4>Apps SDK</h4><p>MCP 위에 <b>UI까지</b> 얹은 확장</p></div>
+        <div class="card"><h4>Agents SDK</h4><p>MCP 지원 <b>기본 탑재</b></p></div>
+      </div>
+    </div>
+
+    <div class="blk">
+      <div class="bh"><h3>흡수되는 것 · 남는 것</h3></div>
+      <div class="vs">
+        <div class="col in"><div class="lbl">모델 안으로</div><h4>능력</h4><ul>
+          <li>툴 호출 루프 · 재시도</li><li>컨텍스트 압축</li><li>화면 조작 · 파일 편집</li><li>문서 · 시트 · 슬라이드 산출</li></ul></div>
+        <div class="col out"><div class="lbl">모델 밖에</div><h4>접속 · 권한 · 책임</h4><ul>
+          <li>디스커버리 · 어디에 뭐가 있나</li><li>인증 · 인가 · 누가 뭘 할 수 있나</li><li>감사 로그 · 무엇을 했나</li><li>되돌릴 수 없는 일의 승인 게이트</li></ul></div>
+      </div>
+    </div>
+
+    <div class="blk">
+      <div class="bh"><h3>화면 조작은 <span class="mk">비싸다</span></h3><span class="tag">컴퓨터 유즈 vs API</span></div>
+      <div class="cards">
+        <div class="card"><h4>스텝마다 비용</h4><p>스크린샷 → 멀티모달 호출 → 액션. <b>비용·지연이 스텝 수에 비례</b></p></div>
+        <div class="card"><h4>더 자주 실패</h4><p>느리고, 작업당 비싸고, <b>실패율이 높다</b></p></div>
+        <div class="card hot"><h4>프로덕션의 답</h4><p><b>API 먼저, 빈틈만 화면.</b> 연동 경로가 없는 레거시 포털 정도에만</p></div>
+      </div>
+      <div class="cap">게다가 사람 계정으로 사람 화면을 조작하면 권한이 그 사람 권한 전체가 된다. 능력이 좋아질수록 통제 레이어가 더 필요해진다.</div>
+    </div>
+
+    <div class="blk">
+      <div class="bh"><h3>규격이 <span class="mk">배관</span>이 되는 중</h3><span class="tag">2026-07-28 명세 · 재단 기증</span></div>
+      <div class="tiles">
+        <div class="tile"><div class="k">프로덕션 투입</div><div class="v">41<small>%</small></div><div class="d">조직 기준 · Stacklok 2026</div></div>
+        <div class="tile"><div class="k">SDK 월 다운로드</div><div class="v">9,700<small>만+</small></div><div class="d">ChatGPT · Claude · Gemini · Copilot 등</div></div>
+        <div class="tile"><div class="k">서버 수</div><div class="v">1만<small>→10만</small></div><div class="d">공식 레지스트리 → 서드파티 집계</div></div>
+      </div>
+      <div class="cards" style="margin-top:12px">
+        <div class="card"><h4>무상태 코어</h4><p>운영·확장이 쉬워짐</p></div>
+        <div class="card"><h4>인가 강화</h4><p>누가 무엇을, 이 더 촘촘히</p></div>
+        <div class="card"><h4>폐기 정책</h4><p>오래 갈 인프라가 하는 일</p></div>
+        <div class="card"><h4>리눅스재단 기증</h4><p>앤트로픽 · Block · <b>OpenAI</b> 공동 설립</p></div>
+      </div>
+    </div>
+
+    <div class="blk">
+      <div class="bh"><h3>보안이 남는 이유</h3><span class="tag">2026.06 NSA·미 국방부 공동 권고</span></div>
+      <div class="tiles">
+        <div class="tile warn"><div class="k">경로 탐색</div><div class="v">82<small>%</small></div><div class="d">테스트된 구현체</div></div>
+        <div class="tile warn"><div class="k">명령어 주입</div><div class="v">43<small>%</small></div><div class="d">테스트된 서버</div></div>
+        <div class="tile warn"><div class="k">SSRF</div><div class="v">36.7<small>%</small></div><div class="d">7,000개+ 서버</div></div>
+        <div class="tile warn"><div class="k">툴 포이즈닝</div><div class="v">5.5<small>%</small></div><div class="d">1,899개 서버 조사</div></div>
+      </div>
+      <div class="cap">조사 주체와 모집단이 달라 서로 비교하지 않는다. 위험이 넓게 제기됐다는 정도로 읽는다.</div>
+    </div>
+
+    <div class="verdict"><div class="lbl">발제에 대한 답</div>
+      <p>MCP는 필요 없어지는 게 아니라, 재미없어진다. 자랑거리에서 배관으로.</p></div>
+  </div>
+</section>
+
+<!-- 04 API -->
+<section class="part" id="api">
+  <div class="wrap">
+    <div class="ph"><div class="n">04</div><div class="t">API는 왜 다시 돈이 되나</div>
+      <div class="q">AI 회사의 API가 아니라, 일반 기업의 API 얘기</div></div>
+
+    <div class="blk">
+      <div class="bh"><h3>호출하는 쪽이 <span class="mk">기계</span>가 됐다</h3></div>
+      <div class="tiles">
+        <div class="tile"><div class="k">웹 트래픽 중 봇</div><div class="v">57.5<small>%</small></div><div class="d">처음으로 사람(42.5%)을 넘음<br>Cloudflare · 2026.06</div></div>
+        <div class="tile"><div class="k">에이전틱 트래픽</div><div class="v">+7,851<small>%</small></div><div class="d">전년 대비 · 사람보다 8배 빠른 확장<br>HUMAN Security</div></div>
+        <div class="tile"><div class="k">Expedia B2B</div><div class="v">210<small>억 건/일</small></div><div class="d">여행사가 돌리는 <b>API 호출량</b></div></div>
+        <div class="tile"><div class="k">API 성장 51~100%</div><div class="v">47<small>%</small></div><div class="d">지난 1년 응답 조직 비율<br>Postman 2026</div></div>
+      </div>
+    </div>
+
+    <div class="blk">
+      <div class="bh"><h3>왜 지금인가 · <span class="mk">인과 사슬</span></h3><span class="tag">상관이 아니라 경로</span></div>
+      <div class="chain">
+        <div class="link"><div class="id">A</div><h4>수요 이동</h4><p>사람은 화면, 에이전트는 API. <b>새 수요가 아니라 층간 이동</b></p></div>
+        <div class="link"><div class="id">B</div><h4>마찰 붕괴</h4><p>통합·발견 비용이 <b>인건비에서 토큰값</b>으로. 롱테일 API가 살아난다</p></div>
+        <div class="link"><div class="id">C</div><h4>과금 성립</h4><p>토큰 과금이 <b>쓴 만큼 낸다</b>를 표준으로. API는 원래 미터링 상품</p></div>
+      </div>
+      <div class="sum">
+        <div><span>A만</span>비용 증가</div>
+        <div><span>A + B</span>생태계</div>
+        <div class="win"><span>A + B + C</span>마켓플레이스</div>
+      </div>
+    </div>
+
+    <div class="blk">
+      <div class="bh"><h3>시장은 이렇게 <span class="mk">재평가</span>됐다</h3></div>
+      <div class="tiles">
+        <div class="tile"><div class="k">API 마켓플레이스</div><div class="v">$21.4<small>B → $112.6B</small></div><div class="d">2025 → 2035 · 연 18.1%<br>동인: <b>AI 에이전트의 발견·수익화</b></div></div>
+        <div class="tile"><div class="k">API 관리 시장</div><div class="v">$16.3<small>B</small></div><div class="d">2026 · 2027년 $21.8B 전망</div></div>
+        <div class="tile"><div class="k">API로 매출 내는 조직</div><div class="v">65<small>%</small></div><div class="d">이미 수익화 중</div></div>
+      </div>
+    </div>
+
+    <div class="blk">
+      <div class="bh"><h3>좌석에서 <span class="mk">호출</span>로</h3><span class="tag">From Seats to Calls · L.E.K.</span></div>
+      <div class="tw"><table>
+        <thead><tr><th>누가</th><th>과금 단위</th><th>비고</th></tr></thead>
+        <tbody>
+          <tr><th>레딧</th><td class="n">$0.24 / 1,000호출</td><td>공개 API 요금</td></tr>
+          <tr><th>Intercom Fin</th><td class="n">$0.99 / 해결 1건</td><td>억 달러대 매출</td></tr>
+          <tr><th>Zendesk</th><td class="n">$1.50~2.00 / 해결</td><td>약정 / 종량제</td></tr>
+          <tr><th>Salesforce Agentforce</th><td class="n">$2 / 대화</td><td>ARR 8억 달러</td></tr>
+        </tbody>
+      </table></div>
+      <div class="cap">AI 에이전트 회사의 91.3%가 사용량 기반 과금을 쓴다 (2025년 83.3%).</div>
+    </div>
+
+    <div class="blk">
+      <div class="bh"><h3>결제 배관은 깔렸다, <span class="mk">수요는 아직</span></h3></div>
+      <div class="cards">
+        <div class="card"><h4>x402<small>코인베이스 → 리눅스재단</small></h4><p>HTTP 402 부활. <b>요청 하나당</b> 스테이블코인 결제</p></div>
+        <div class="card"><h4>ACP<small>OPENAI · STRIPE</small></h4><p>에이전트와 판매자 사이 <b>체크아웃 표준</b></p></div>
+        <div class="card"><h4>Pay Per Use<small>CLOUDFLARE</small></h4><p>콘텐츠가 <b>AI 답변에 쓰일 때</b> 정산</p></div>
+      </div>
+      <div class="tiles" style="margin-top:12px">
+        <div class="tile"><div class="k">x402 누적 거래</div><div class="v">1.65<small>억 건</small></div><div class="d">누적 $5,000만 · 활성 에이전트 6.9만<br>2026.04</div></div>
+        <div class="tile warn"><div class="k">그중 테스트성</div><div class="v">~50<small>%</small></div><div class="d">실거래는 <b>하루 약 2.8만 달러</b><br>2026.05</div></div>
+      </div>
+    </div>
+
+    <div class="blk">
+      <div class="bh"><h3>가격은 무너져도 <span class="mk">마진은 남는다</span></h3><span class="tag">딥시크</span></div>
+      <div class="tiles">
+        <div class="tile"><div class="k">API 매출총이익률</div><div class="v">82.9<small>%</small></div><div class="d">2026.01~07</div></div>
+        <div class="tile"><div class="k">입력 단가</div><div class="v">$0.28</div><div class="d">100만 토큰당 · 캐시 미스</div></div>
+        <div class="tile"><div class="k">1~7월 매출</div><div class="v">$7,070<small>만</small></div><div class="d">작년 연간의 약 10배</div></div>
+      </div>
+      <div class="bars" style="margin-top:28px">
+        <div class="bar"><span class="nm">GLM-4.7</span><span class="tr"><i style="width:1.1%"></i></span><span class="vl">$0.11</span></div>
+        <div class="bar"><span class="nm">DeepSeek V4</span><span class="tr"><i style="width:2.7%"></i></span><span class="vl">$0.27</span></div>
+        <div class="bar"><span class="nm">시장 평균</span><span class="tr"><i style="width:11.7%"></i></span><span class="vl">$1.17</span></div>
+        <div class="bar me"><span class="nm">GPT-6 아스트라</span><span class="tr"><i style="width:100%"></i></span><span class="vl">$10</span></div>
+      </div>
+      <div class="cap">100만 입력 토큰당, 아스트라를 100%로 둔 선형 비교. 바닥은 공짜에 수렴하고 꼭대기는 벌어졌다. 딥시크 수치는 제3자 보도·추정.</div>
+    </div>
+
+    <div class="blk">
+      <div class="warnbox"><div class="lbl">이 논리가 틀릴 수 있는 네 가지</div><ol>
+        <li><b>순환논증</b><span>시장 숫자는 대부분 벤더·조사기관 발표. 매출이 아니라 기대의 재평가일 수 있다</span></li>
+        <li><b>동어반복</b><span>제일 빨리 크는 게 AI API 자체. 모델 API를 빼도 성립하나</span></li>
+        <li><b>트래픽 ≠ 매출</b><span>봇 57.5%의 대부분은 돈을 안 내는 크롤러. 그냥 서버비일 수 있다</span></li>
+        <li><b>컴퓨터 유즈의 역습</b><span>화면 조작이 싸지면 API를 거칠 이유가 줄어든다</span></li>
+      </ol></div>
+    </div>
+
+    <div class="verdict"><div class="lbl">방어 가능한 주장은 여기까지</div>
+      <p>호출 주체가 뒤집혔고, 값을 매길 배관이 깔렸고, 선행 사례가 나오기 시작했다.</p></div>
+  </div>
+</section>
+
+<!-- 05 어디쯤 -->
+<section class="part" id="where">
+  <div class="wrap">
+    <div class="ph"><div class="n">05</div><div class="t">우리는 어디쯤인가</div>
+      <div class="q">MCP와 API를 한 표에 놓고, 각자 좌표를 찍는다</div></div>
+
+    <div class="blk">
+      <div class="bh"><h3>경쟁이 아니라 <span class="mk">층</span>이 다르다</h3></div>
+      <div class="tw"><table>
+        <thead><tr><th></th><th>API</th><th>MCP</th></tr></thead>
+        <tbody>
+          <tr><th>누가 읽나</th><td>사람 · 개발자</td><td>모델</td></tr>
+          <tr><th>언제 정해지나</th><td>빌드 타임</td><td>런타임</td></tr>
+          <tr><th>푸는 문제</th><td>시스템 간 통신</td><td>발견 · 권한 · 승인</td></tr>
+          <tr><th>관계</th><td colspan="2"><b>MCP 서버는 결국 안에서 API를 부른다.</b> API 위에 씌우는 층.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="blk">
+      <div class="bh"><h3>세 갈래 미래 · <span class="mk">각자 베팅</span></h3></div>
+      <div class="chain">
+        <div class="link"><div class="id">A</div><h4>흡수설</h4><p>모델이 다 한다. 연결 말고 <b>모델 쓰는 법</b>에 투자</p></div>
+        <div class="link"><div class="id">B</div><h4>배관설</h4><p>능력은 흡수, 통제는 남는다. <b>권한·감사·승인</b>을 지금 설계</p></div>
+        <div class="link"><div class="id">C</div><h4>시장설</h4><p>진짜 변화는 과금. <b>기계가 부를 수 있게</b> 열고 값을 매긴다</p></div>
+      </div>
+    </div>
+
+    <div class="blk">
+      <div class="bh"><h3>좌표 찍기</h3><span class="tag">0 뉴스로만 안다 → 5 일하는 방식이 바뀌었다</span></div>
+      <div class="axes">
+        <div class="ax"><h4>모델 축</h4><p>세대 차이를 내 업무에서 체감했나</p>
+          <div class="dots"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          <div class="ends"><span>뉴스로만</span><span>방식이 바뀜</span></div></div>
+        <div class="ax"><h4>연결 축</h4><p>내 도구·데이터를 모델에 붙여봤나</p>
+          <div class="dots"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          <div class="ends"><span>없음</span><span>프로덕션</span></div></div>
+        <div class="ax"><h4>수익 축</h4><p>우리 것을 기계가 부를 수 있나</p>
+          <div class="dots"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          <div class="ends"><span>API 없음</span><span>호출로 과금</span></div></div>
+      </div>
+    </div>
+
+    <div class="talk"><span class="lbl">마지막 질문</span><ol>
+      <li>세 축 중 내 점수가 가장 낮은 축, 다음 화까지 한 칸 올린다면?</li>
+      <li>A · B · C 중 어디에 베팅하나. 틀렸을 때 가장 손해가 큰 쪽은?</li>
+      <li>우리 회사 API를 여는 건 매출 기회인가, 크롤러 서버비인가?</li>
+    </ol></div>
+  </div>
+</section>
+
+<section class="slab" aria-label="클로징">
+  <div class="wrap">
+    <div class="lbl">클로징</div>
+    <p>모델은 저만치 갔다.<br>우리 일은 <span class="mk">얼마나 움직였나</span>.</p>
+    <div class="sub">정답일 필요 없다. 각자 한 줄.</div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fl"><a href="/topics/" style="color:inherit;border:0">← 일단, 브랜딩<span class="ast">*</span></a></div>
+    <p>2026년 9월 29일 기준 공개 자료. 벤치마크·매출 추정·시장 규모는 출처와 집계 기준에 따라 편차가 크다. AGI 관련 내용은 확정 사실(출시일·점수·가격)과 주장을 나눠 적었고, 아스트라의 단계 배치는 해석이다.</p>
+    <div class="srcs">
+      <div><h6>아스트라 · AGI</h6><ul>
+        <li><a href="https://www.axios.com/2026/09/03/openai-astra-gpt-6-agi-brockman">Axios — 출시와 AGI 발언</a></li>
+        <li><a href="https://ia.acs.org.au/article/2026/openai-says-the-agi-era-is-here-experts-disagree.html">ACS — 전문가 반박</a></li>
+        <li><a href="https://www.techtimes.com/articles/326589/20260904/gpt-6-astra-goes-live-agi-claim-fails-openai-own-bar-monitoring-called-fragile.htm">TechTimes — 자체 기준 미달</a></li>
+        <li><a href="https://artificialanalysis.ai/articles/benchmarking-gpt-6-astra">Artificial Analysis — 벤치마크·턴 수</a></li>
+        <li><a href="https://www.mindstudio.ai/blog/gpt-6-astra-computer-use-agentic">MindStudio — 컴퓨터 유즈 지표</a></li>
+        <li><a href="https://www.mindstudio.ai/blog/gpt-6-astra-benchmarks-analysis">MindStudio — 코딩 비교</a></li>
+        <li><a href="https://www.kaizenko.com/openais-five-levels-of-ai-a-roadmap-from-chatbots-to-agi/">OpenAI 5단계 정리</a></li>
+      </ul></div>
+      <div><h6>MCP · 컴퓨터 유즈</h6><ul>
+        <li><a href="https://developers.openai.com/api/docs/guides/tools-connectors-mcp">OpenAI — MCP·커넥터 문서</a></li>
+        <li><a href="https://blog.modelcontextprotocol.io/posts/2026-07-28/">MCP — 2026-07-28 명세</a></li>
+        <li><a href="https://blog.modelcontextprotocol.io/posts/2025-12-09-mcp-joins-agentic-ai-foundation/">MCP — 재단 합류</a></li>
+        <li><a href="https://www.digitalapplied.com/blog/mcp-adoption-statistics-2026-model-context-protocol">MCP 도입 통계</a></li>
+        <li><a href="https://www.practical-devsecops.com/mcp-security-statistics-2026-report/">MCP 취약점 통계</a></li>
+        <li><a href="https://www.nsa.gov/Portals/75/documents/Cybersecurity/CSI_MCP_SECURITY.pdf">NSA·DoD 권고</a></li>
+        <li><a href="https://unicoconnect.com/blogs/computer-use-vs-api-integration">컴퓨터 유즈 vs API</a></li>
+        <li><a href="https://contracollective.com/blog/computer-use-agents-production-reliability-cost-2026">컴퓨터 유즈 비용·신뢰성</a></li>
+      </ul></div>
+      <div><h6>API · 과금 · 결제</h6><ul>
+        <li><a href="https://workos.com/blog/ai-agent-web-traffic-what-developers-need-to-change">봇 트래픽 과반 (Cloudflare)</a></li>
+        <li><a href="https://www.digitalapplied.com/blog/ai-crawler-bot-traffic-statistics-2026-data-reference">AI 크롤러 트래픽 통계</a></li>
+        <li><a href="https://www.levo.ai/resources/blogs/postman-state-of-api-report">Postman State of the API 2026</a></li>
+        <li><a href="https://ir.expediagroup.com/news-and-events/news/news-details/2026/Expedia-Group-B2B-Introduces-AI-Toolkit-and-Platform-for-the-Future-of-Travel-Distribution/default.aspx">Expedia B2B</a></li>
+        <li><a href="https://www.globenewswire.com/news-release/2026/09/18/3364916/0/en/api-marketplace-market-gains-momentum-as-ai-agents-and-cloud-native-development-expand-api-discovery-and-monetization.html">API 마켓플레이스 시장</a></li>
+        <li><a href="https://www.lek.com/insights/tmt/us/ei/seats-calls-why-api-monetization-next-pricing-frontier-ai-age">L.E.K. — From Seats to Calls</a></li>
+        <li><a href="https://pickaxe.co/post/ai-agent-pricing-models">AI 에이전트 가격 모델</a></li>
+        <li><a href="https://www.chainalysis.com/blog/x402-agentic-payments-adoption/">Chainalysis — x402</a></li>
+        <li><a href="https://www.coindesk.com/markets/2026/03/11/coinbase-backed-ai-payments-protocol-wants-to-fix-micropayment-but-demand-is-just-not-there-yet">CoinDesk — 수요는 아직</a></li>
+        <li><a href="https://blog.cloudflare.com/introducing-pay-per-crawl/">Cloudflare Pay Per Crawl</a></li>
+        <li><a href="https://www.digitaltoday.co.kr/en/view/96900/deepseek-revenue-already-nearly-10-times-last-year-api-gross-margin-82-9-percent">딥시크 API 마진 82.9%</a></li>
+        <li><a href="https://cryptobriefing.com/ai-token-prices-record-lows/">토큰 단가 하락</a></li>
+      </ul></div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
