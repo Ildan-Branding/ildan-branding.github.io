@@ -9,6 +9,14 @@ const doneCount = episodes.filter((e) => e.status === "done").length;
 
 export default function Hero() {
   const glowRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // 움직임 줄이기를 켠 사람에게는 자동 재생하지 않고 포스터만 보여준다
+  useEffect(() => {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      videoRef.current?.pause();
+    }
+  }, []);
 
   useEffect(() => {
     if (matchMedia("(hover: none)").matches) return;
@@ -87,8 +95,35 @@ export default function Hero() {
         </motion.a>
       </div>
 
-      {/* Hero copy */}
-      <div className="min-h-hero-inner relative z-10 mx-auto flex max-w-7xl flex-col justify-center px-5 pb-20 pt-16 md:px-12 md:pb-32">
+      {/* 모션그래픽 쇼릴 — 무음 자동 반복 재생 */}
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+        className="relative z-10 mx-auto mt-6 max-w-7xl px-5 md:mt-10 md:px-12"
+      >
+        <div className="overflow-hidden rounded-2xl border border-lime/20 bg-black shadow-[0_0_80px_-20px_rgba(200,255,61,0.35)] md:rounded-3xl">
+          <video
+            ref={videoRef}
+            className="block aspect-video w-full"
+            src="/media/hero-reel.mp4"
+            poster="/media/hero-reel-poster.jpg"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            aria-label="일단, 브랜딩 모션그래픽 쇼릴"
+          />
+        </div>
+        <div className="mt-3 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.25em] text-white/40 md:text-xs">
+          <span>Showreel · 30s</span>
+          <span>Try · Fail · Learn</span>
+        </div>
+      </motion.div>
+
+      {/* Hero copy — 영상과 겹치지 않게 아래로 */}
+      <div className="relative z-10 mx-auto flex max-w-7xl flex-col px-5 pb-20 pt-14 md:px-12 md:pb-28 md:pt-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -102,7 +137,7 @@ export default function Hero() {
         </motion.div>
 
         <div className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between md:gap-10 lg:gap-16">
-          <h1 className="display-1 text-[18vw] leading-[0.82] md:text-[14vw] lg:text-[12rem]">
+          <h1 className="display-1 text-[16vw] leading-[0.82] md:text-[10vw] lg:text-[9rem]">
             <motion.span
               initial={{ opacity: 0, y: 60 }}
               animate={{ opacity: 1, y: 0 }}
@@ -213,22 +248,6 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.8 }}
-        className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2 md:bottom-10"
-      >
-        <div className="flex flex-col items-center gap-2 font-mono text-[10px] uppercase tracking-[0.3em] text-white/50">
-          <span>Scroll</span>
-          <motion.span
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.6, repeat: Infinity }}
-            className="h-6 w-px bg-white/40"
-          />
-        </div>
-      </motion.div>
     </section>
   );
 }
