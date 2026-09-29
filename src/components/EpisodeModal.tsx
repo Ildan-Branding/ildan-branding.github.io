@@ -140,6 +140,28 @@ export default function EpisodeModal({ episode, onClose }: Props) {
                 <span>{episode.dateLabel}</span>
               </div>
 
+              {/* 진행 자료 — 새 탭으로 연다 */}
+              {episode.material && (
+                <a
+                  href={episode.material.href}
+                  target="_blank"
+                  rel="noopener"
+                  className="group mt-7 flex items-center justify-between gap-4 rounded-2xl bg-lime px-6 py-5 text-ink transition hover:bg-lime-soft"
+                >
+                  <span className="flex flex-col gap-1">
+                    <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.25em] text-ink/60">
+                      Material
+                    </span>
+                    <span className="text-lg font-extrabold leading-tight md:text-xl">
+                      {episode.material.label}
+                    </span>
+                  </span>
+                  <span className="text-2xl transition group-hover:translate-x-1" aria-hidden>
+                    ↗
+                  </span>
+                </a>
+              )}
+
               {/* Segments — 대화가 흘러가는 순서 */}
               {episode.segments.length > 0 && (
                 <div className="relative mt-10">
