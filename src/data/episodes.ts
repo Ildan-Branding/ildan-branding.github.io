@@ -245,6 +245,42 @@ export const episodes: Episode[] = [
       },
     ]),
     material: { href: "/materials/ep06.html", label: "EP.06 자료 보기" },
+    status: "done",
+  },
+  {
+    ep: 7,
+    badge: "EP.07",
+    date: "11월 6일 (금) 오후 9:00",
+    dateLabel: "일곱 번째 에피소드",
+    question: "AI 거품론 속에서, 우리는 무엇을 만들까?",
+    copy: "새 멤버와 함께, 공모전으로 다시 만들기 시작한다.",
+    // 이번 화는 공통 오프닝 대신 이슈 분석과 경험 공유를 길게 잡고, 신규 멤버 소개를 넣었다.
+    segments: [
+      {
+        at: "00:00",
+        title: "지난 한 달 AI 이슈 분석",
+        desc: "앤트로픽 상장 · 신모델 경쟁 · AI 거품론 · 에이전트 보안 사고",
+        highlight: "AI 거품론",
+      },
+      {
+        at: "00:30",
+        title: "개인 경험 공유",
+        desc: "지난 한 달 각자 AI를 어디에 썼고, 어디서 막혔는지",
+        highlight: "어디서 막혔는지",
+      },
+      {
+        at: "00:50",
+        title: "신규 멤버 소개",
+        desc: "새로 합류한 멤버의 소개와 각자 해보고 싶은 것",
+      },
+      {
+        at: "01:10",
+        title: "현대자동차 공모전 논의",
+        desc: "참가 여부부터 주제 방향, 팀 구성까지",
+        highlight: "참가 여부",
+      },
+    ],
+    material: { href: "/materials/ep07.html", label: "EP.07 지난 이슈 보기" },
     status: "next",
   },
 ];
