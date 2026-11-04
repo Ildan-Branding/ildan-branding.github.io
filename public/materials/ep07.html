@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0A0A0A">
+<title>EP.07 지난 한 달 AI 이슈</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+/* 레이아웃: 한 패널에 한 키워드. 잉크 바탕 + 라임은 형광펜·마커로만, 핵심 명제는 페이퍼 반전 슬랩 */
+:root{
+  --ink:#0A0A0A; --ink2:#121212; --ink3:#1A1A1A; --line:#2A2A28;
+  --paper:#F4F1E8; --muted:#A09E95; --faint:#65635D;
+  --lime:#C8FF3D; --lime-soft:#E4FF8A; --lime-dim:rgba(200,255,61,.12);
+  --warn:#FF6B5B; --warn-dim:rgba(255,107,91,.12);
+  --sans:"Gothic A1","Pretendard","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --maxw:1120px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--sans);font-size:17px;line-height:1.7;
+  -webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:break-word}
+.wrap{max-width:var(--maxw);margin:0 auto;padding-inline:20px}
+a{color:var(--lime);text-decoration:none;border-bottom:1px solid rgba(200,255,61,.3)}
+a:hover{border-bottom-color:var(--lime)}
+:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
+::selection{background:var(--lime);color:var(--ink)}
+.mk{background:var(--lime);color:var(--ink);padding:0 .14em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.hl{color:var(--lime)}
+.mono{font-family:var(--mono)}
+
+/* 내비 */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(10,10,10,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;gap:6px;overflow-x:auto;padding-block:10px;scrollbar-width:none}
+.nav .wrap::-webkit-scrollbar{display:none}
+.nav a{flex:0 0 auto;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:700;color:var(--muted);white-space:nowrap}
+.nav a b{font-family:var(--mono);font-weight:500;color:var(--lime);margin-right:6px}
+.nav a:hover{border-color:var(--lime);color:var(--paper)}
+
+/* 커버 */
+.cover{padding-block:72px 56px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;font-weight:900;font-size:16px;letter-spacing:-.02em}
+.brand .ast{color:var(--lime)}
+.brand .ep{margin-left:auto;font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.2em;color:var(--faint)}
+.cover h1{margin:48px 0 0;font-weight:900;font-size:clamp(36px,7.4vw,84px);line-height:1.1;letter-spacing:-.045em;text-wrap:balance}
+.cover h1 em{font-style:normal;color:var(--lime)}
+.kw{display:flex;flex-wrap:wrap;gap:8px;margin-top:34px}
+.kw span{font-family:var(--mono);font-size:13px;font-weight:500;letter-spacing:.06em;padding:7px 14px;border:1px solid var(--lime);color:var(--lime);border-radius:999px}
+.meta{display:flex;flex-wrap:wrap;gap:8px 28px;margin-top:30px;font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;color:var(--muted)}
+.meta b{color:var(--paper);font-weight:500}
+
+/* 페이퍼 반전 슬랩 */
+.slab{background:var(--paper);color:var(--ink);padding-block:56px}
+.slab .lbl{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.24em;color:#6B685F}
+.slab p{margin:14px 0 0;font-weight:900;font-size:clamp(26px,4.6vw,50px);line-height:1.22;letter-spacing:-.04em;text-wrap:balance}
+.slab .sub{margin-top:14px;font-size:16px;font-weight:500;letter-spacing:0;color:#55534C;line-height:1.6}
+
+/* 파트 */
+.part{padding-block:72px;border-bottom:1px solid var(--line)}
+.ph{display:grid;grid-template-columns:auto 1fr;gap:6px 20px;align-items:end;margin-bottom:40px}
+.ph .n{font-family:var(--mono);font-weight:700;font-size:clamp(48px,9vw,96px);line-height:.8;color:var(--lime);letter-spacing:-.05em}
+.ph .t{font-weight:900;font-size:clamp(28px,5vw,52px);line-height:1.1;letter-spacing:-.04em;text-wrap:balance}
+.ph .q{grid-column:1/-1;font-size:17px;color:var(--muted);font-weight:500;margin-top:10px}
+
+.blk{margin-top:56px}
+.blk:first-of-type{margin-top:0}
+.bh{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.bh h3{margin:0;font-weight:800;font-size:clamp(22px,3.2vw,30px);letter-spacing:-.03em;line-height:1.25;text-wrap:balance}
+.bh .tag{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.14em;color:var(--faint);text-transform:uppercase}
+.lead{font-size:18px;color:var(--muted);max-width:60ch;margin:0 0 20px}
+.lead b{color:var(--paper);font-weight:700}
+
+/* 숫자 타일 */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.tile{background:var(--ink2);padding:22px 22px 20px;min-width:0}
+.tile .k{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+.tile .v{font-family:var(--mono);font-weight:700;font-size:clamp(34px,5vw,48px);line-height:1.05;letter-spacing:-.03em;margin-top:10px;color:var(--lime);font-variant-numeric:tabular-nums}
+.tile .v small{font-size:.42em;color:var(--muted);font-weight:500;letter-spacing:0;margin-left:4px}
+.tile .d{margin-top:8px;font-size:14px;color:var(--muted);line-height:1.5}
+.tile .d b{color:var(--paper);font-weight:700}
+.tile.warn .v{color:var(--warn)}
+
+/* 키워드 카드 */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.card{border:1px solid var(--line);background:var(--ink2);padding:20px;min-width:0}
+.card h4{margin:0;font-weight:800;font-size:20px;letter-spacing:-.02em}
+.card h4 small{display:block;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.12em;color:var(--faint);margin-top:3px}
+.card p{margin:10px 0 0;font-size:15px;color:var(--muted);line-height:1.6}
+.card p b{color:var(--paper);font-weight:700}
+.card.hot{border-color:var(--lime);background:var(--lime-dim)}
+
+/* 두 칸 대비 */
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.col{border:1px solid var(--line);padding:22px;background:var(--ink2);min-width:0}
+.col .lbl{font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.18em;color:var(--muted)}
+.col h4{margin:6px 0 14px;font-weight:900;font-size:22px;letter-spacing:-.03em}
+.col ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px}
+.col li{font-size:16px;font-weight:600;padding-left:18px;position:relative;line-height:1.45}
+.col li::before{content:"";position:absolute;left:0;top:.62em;width:8px;height:2px;background:var(--faint)}
+.col.in{border-top:3px solid var(--muted)}
+.col.out{border-top:3px solid var(--lime)}
+.col.out li::before{background:var(--lime)}
+@media (max-width:680px){.vs{grid-template-columns:1fr}}
+
+/* 가로 막대 */
+.bars{display:flex;flex-direction:column;gap:12px;max-width:760px}
+.bar{display:grid;grid-template-columns:150px 1fr 64px;gap:14px;align-items:center}
+.bar .nm{font-size:14.5px;font-weight:700;min-width:0}
+.bar .tr{height:14px;background:var(--ink3);position:relative}
+.bar .tr i{position:absolute;inset:0 auto 0 0;background:var(--faint)}
+.bar.me .tr i{background:var(--lime)}
+.bar .vl{font-family:var(--mono);font-weight:700;font-size:15px;text-align:right;font-variant-numeric:tabular-nums}
+.bar.me .vl{color:var(--lime)}
+.cap{margin-top:12px;font-size:13px;color:var(--faint);line-height:1.6;max-width:70ch}
+@media (max-width:520px){.bar{grid-template-columns:1fr 56px;gap:4px 10px}.bar .tr{grid-column:1/-1;grid-row:2}}
+
+/* 사다리 */
+.ladder{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.step{border:1px solid var(--line);background:var(--ink2);padding:16px 14px 18px;position:relative;min-width:0}
+.step .lv{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--faint)}
+.step b{display:block;margin-top:6px;font-weight:900;font-size:18px;letter-spacing:-.02em}
+.step span{display:block;margin-top:4px;font-size:13px;color:var(--muted);line-height:1.45}
+.step.now{border-color:var(--lime);background:var(--lime-dim)}
+.step.now .lv{color:var(--lime)}
+.step.goal{border-style:dashed}
+.pin{display:inline-block;margin-top:10px;font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.06em;padding:3px 8px;background:var(--lime);color:var(--ink)}
+.pin.ghost{background:transparent;color:var(--muted);border:1px dashed var(--faint)}
+@media (max-width:760px){.ladder{grid-template-columns:1fr}}
+
+/* 인과 사슬 */
+.chain{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.link{border:1px solid var(--line);background:var(--ink2);padding:22px;min-width:0;position:relative}
+.link .id{font-family:var(--mono);font-weight:700;font-size:34px;color:var(--lime);line-height:1}
+.link h4{margin:10px 0 0;font-weight:900;font-size:22px;letter-spacing:-.03em}
+.link p{margin:8px 0 0;font-size:15px;color:var(--muted);line-height:1.55}
+.link p b{color:var(--paper)}
+.sum{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:12px}
+.sum div{background:var(--ink);padding:14px 18px;font-size:15px;font-weight:700;min-width:0}
+.sum div span{display:block;font-family:var(--mono);font-size:12px;color:var(--faint);font-weight:500;letter-spacing:.08em}
+.sum div.win{background:var(--lime);color:var(--ink)}
+.sum div.win span{color:#3C4A12}
+@media (max-width:760px){.chain,.sum{grid-template-columns:1fr}}
+
+/* 표 */
+.tw{overflow-x:auto;border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:15px}
+th,td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);background:var(--ink2)}
+tbody tr:last-child td,tbody tr:last-child th{border-bottom:0}
+tbody th{font-weight:800}
+td.n{font-family:var(--mono);font-weight:700;font-variant-numeric:tabular-nums;color:var(--lime);white-space:nowrap}
+td small,th small{display:block;font-size:12.5px;color:var(--faint);font-weight:400;margin-top:2px}
+
+/* 인용 */
+.quotes{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.qt{border-left:3px solid var(--line);padding:4px 0 4px 16px}
+.qt p{margin:0;font-weight:700;font-size:17px;line-height:1.5;letter-spacing:-.01em}
+.qt cite{display:block;margin-top:8px;font-style:normal;font-family:var(--mono);font-size:12px;color:var(--faint);letter-spacing:.04em}
+.qt.claim{border-left-color:var(--lime)}
+
+/* 주의 / 반론 */
+.warnbox{border:1px solid rgba(255,107,91,.4);background:var(--warn-dim);padding:22px}
+.warnbox .lbl{font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.2em;color:var(--warn)}
+.warnbox ol{margin:12px 0 0;padding:0;list-style:none;counter-reset:w;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px 22px}
+.warnbox li{counter-increment:w;min-width:0}
+.warnbox li b{display:block;font-weight:900;font-size:17px}
+.warnbox li b::before{content:counter(w) "  ";font-family:var(--mono);color:var(--warn)}
+.warnbox li span{display:block;margin-top:4px;font-size:14.5px;color:var(--muted);line-height:1.5}
+
+/* 결론 한 줄 */
+.verdict{margin-top:40px;padding:26px 26px;background:var(--lime);color:var(--ink)}
+.verdict .lbl{font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.2em;color:#3C4A12}
+.verdict p{margin:8px 0 0;font-weight:900;font-size:clamp(22px,3.4vw,32px);line-height:1.3;letter-spacing:-.035em;text-wrap:balance}
+
+/* 토론 */
+.talk{margin-top:40px;border:1px dashed var(--faint);padding:22px 24px}
+.talk .lbl{font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.2em;color:var(--lime)}
+.talk ol{margin:12px 0 0;padding-left:22px;display:flex;flex-direction:column;gap:10px}
+.talk li{font-size:17px;font-weight:600;line-height:1.5}
+.talk li::marker{font-family:var(--mono);color:var(--lime)}
+
+/* 좌표 */
+.axes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.ax{border:1px solid var(--line);background:var(--ink2);padding:20px;min-width:0}
+.ax h4{margin:0;font-weight:900;font-size:20px;letter-spacing:-.02em}
+.ax p{margin:6px 0 16px;font-size:14.5px;color:var(--muted)}
+.dots{display:flex;justify-content:space-between;gap:4px}
+.dots span{flex:1;height:30px;border:1px solid var(--line);display:grid;place-items:center;font-family:var(--mono);font-size:12px;color:var(--faint)}
+.dots span:last-child{border-color:var(--lime);color:var(--lime)}
+.ends{display:flex;justify-content:space-between;margin-top:6px;font-size:12px;color:var(--faint)}
+@media (max-width:760px){.axes{grid-template-columns:1fr}}
+
+/* 출처 */
+footer{padding-block:56px 80px}
+footer .fl{font-weight:900;font-size:16px}
+footer .fl .ast{color:var(--lime)}
+footer p{font-size:13.5px;color:var(--faint);max-width:72ch;line-height:1.7}
+.srcs{margin-top:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px}
+.srcs h6{margin:0 0 8px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.18em;color:var(--muted)}
+.srcs ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:5px}
+.srcs li{font-size:13px;line-height:1.5}
+.srcs a{color:var(--muted);border-bottom-color:var(--line)}
+.srcs a:hover{color:var(--lime)}
+</style>
+<style>
+.agenda{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:30px}
+.agenda div{background:var(--ink2);padding:16px 18px;min-width:0}
+.agenda div span{display:block;font-family:var(--mono);font-size:12px;color:var(--lime);letter-spacing:.08em}
+.agenda div b{display:block;margin-top:4px;font-size:16px;font-weight:800;letter-spacing:-.02em}
+.agenda div.now{background:var(--lime-dim);box-shadow:inset 0 3px 0 var(--lime)}
+@media (max-width:760px){.agenda{grid-template-columns:1fr 1fr}}
+.src{margin-top:10px;font-family:var(--mono);font-size:11.5px;color:var(--faint);letter-spacing:.02em}
+.src a{color:var(--faint);border-bottom-color:var(--line)}
+.src a:hover{color:var(--lime)}
+</style>
+</head>
+<body>
+<nav class="nav" aria-label="이슈 이동">
+  <div class="wrap">
+    <a href="#ipo"><b>01</b>앤트로픽 상장</a>
+    <a href="#models"><b>02</b>신모델 경쟁</a>
+    <a href="#science"><b>03</b>AI의 과학 성과</a>
+    <a href="#bubble"><b>04</b>거품 우려</a>
+    <a href="#security"><b>05</b>에이전트 보안</a>
+    <a href="#jobs"><b>06</b>일자리·규제</a>
+  </div>
+</nav>
+
+<header class="cover">
+  <div class="wrap">
+    <div class="brand"><a href="/topics/" style="color:inherit;border:0">일단, 브랜딩<span class="ast">*</span></a><span class="ep">EP.07 · 11.06 (금) 21:00</span></div>
+    <h1>AI 거품론 속에서,<br>우리는 <em>무엇을</em> 만들까?</h1>
+    <div class="kw" aria-label="지난 한 달 키워드">
+      <span>ANTHROPIC IPO</span><span>GEMINI 4</span><span>GPT-6.1 TERRA</span><span>AI BUBBLE</span><span>AGENT SECURITY</span>
+    </div>
+    <div class="agenda" aria-label="진행 순서">
+      <div class="now"><span>00:00</span><b>지난 이슈 분석</b></div>
+      <div><span>00:30</span><b>개인 경험 공유</b></div>
+      <div><span>00:50</span><b>신규 멤버 소개</b></div>
+      <div><span>01:10</span><b>현대자동차 공모전</b></div>
+    </div>
+    <div class="meta"><span>범위 <b>2026.10 초 ~ 11 초</b></span><span>진행 <b>수다 · 발표 없음</b></span></div>
+  </div>
+</header>
+
+<section class="slab" aria-label="한 달 요약">
+  <div class="wrap">
+    <div class="lbl">지난 한 달을 한 줄로</div>
+    <p>한쪽은 <span class="mk">2조 달러 상장</span>,<br>다른 쪽은 목표 축소와 파산.</p>
+    <div class="sub">돈은 소수의 프런티어로 몰리고, 그 밖은 흔들린다. 이게 거품인가, 정리인가.</div>
+  </div>
+</section>
+
+<section class="part" id="ipo">
+  <div class="wrap">
+    <div class="ph"><div class="n">01</div><div class="t">앤트로픽 IPO</div>
+      <div class="q">10월 26일 나스닥 상장 신고서(S-1) 제출 · 티커 “ANT”</div></div>
+    <div class="tiles">
+      <div class="tile"><div class="k">2026 상반기 매출</div><div class="v">$163<small>억</small></div><div class="d">1년 전 <b>$12억</b>에서 급증</div></div>
+      <div class="tile"><div class="k">조달 목표</div><div class="v">$1,000<small>억+</small></div><div class="d">WSJ 보도</div></div>
+      <div class="tile"><div class="k">목표 기업가치</div><div class="v">$1.5~2<small>조</small></div><div class="d">11월 16일이 있는 주 상장 계획</div></div>
+    </div>
+    <div class="cards" style="margin-top:12px">
+      <div class="card hot"><h4>EP.06에서 이어지는 실</h4><p>앤트로픽은 매출의 대부분이 <b>API</b>인 회사. “API는 왜 다시 돈이 되나”가 상장 서류로 확인되는 자리</p></div>
+    </div>
+    <div class="src">출처 · <a href="https://ground.news/article/8252384f-fc22-4caa-b4cb-d1fa68d3c22a">Ground News</a> · <a href="https://www.benzinga.com/node/62595495">Benzinga</a></div>
+  </div>
+</section>
+
+<section class="part" id="models">
+  <div class="wrap">
+    <div class="ph"><div class="n">02</div><div class="t">신모델 경쟁</div>
+      <div class="q">한 달 동안 프런티어 3사가 모두 새 모델을 냈다</div></div>
+    <div class="cards">
+      <div class="card"><h4>Gemini 4 Argon<small>GOOGLE · 10.13</small></h4><p>개발자·기업·유료 사용자 공개</p></div>
+      <div class="card"><h4>Gemini 4 Carbon<small>GOOGLE · 10.28</small></h4><p><b>사이버보안·장기 작업</b>에 가장 강하다는 모델</p></div>
+      <div class="card hot"><h4>GPT-6.1 Terra<small>OPENAI · 10.26</small></h4><p>아스트라급 성능을 <b>10분의 1 비용</b>에 낸다는 회사 주장</p></div>
+      <div class="card"><h4>GPT-6 Rosalind Research<small>OPENAI · 10.30</small></h4><p>생명과학용 · <b>승인된 연구 고객만</b></p></div>
+      <div class="card"><h4>Muse Wonder<small>META · 10.12</small></h4><p>개인·업무용 <b>에이전트 모델</b></p></div>
+      <div class="card"><h4>Large 4<small>MISTRAL</small></h4><p><b>가중치 공개</b></p></div>
+    </div>
+    <div class="verdict"><div class="lbl">읽는 법</div><p>아스트라가 나온 지 두 달 만에 같은 성능이 10분의 1 값. 꼭대기 가격도 결국 내려온다.</p></div>
+    <div class="src">출처 · <a href="https://medium.com/@ConcernedhumanonAI/the-ai-landscape-october-2026-a0a44c7b111e">Medium</a> · <a href="https://www.newegg.com/insider/ai-news-this-week-october-26-30-2026">Newegg</a> · <a href="https://note.com/coconut_1122_/n/n73f25e80ee06?hl=en">note</a> · <a href="https://signaldrifts.substack.com/p/this-week-in-ai2">Signal Drifts</a></div>
+  </div>
+</section>
+
+<section class="part" id="science">
+  <div class="wrap">
+    <div class="ph"><div class="n">03</div><div class="t">AI가 내놓은 과학 성과</div>
+      <div class="q">“일을 끝낸다”에서 “발견한다”로</div></div>
+    <div class="tiles">
+      <div class="tile"><div class="k">지수시간 가설(ETH)</div><div class="v" style="font-size:clamp(24px,3.4vw,34px)">반증 주장</div><div class="d">오픈AI · 10.26<br>앤트로픽도 비슷한 논문</div></div>
+      <div class="tile"><div class="k">수학 원고 공개</div><div class="v">722<small>편</small></div><div class="d">오픈AI 미공개 내부 모델이 작성<br>GitHub · 10월 초</div></div>
+    </div>
+    <div class="cards" style="margin-top:12px">
+      <div class="card hot"><h4>EP.06 AGI 사다리</h4><p>OpenAI 5단계 중 <b>LV.4 혁신가</b>(새로운 발견)를 겨냥한 주장. 검증은 아직 진행 중</p></div>
+    </div>
+    <div class="src">출처 · <a href="https://signaldrifts.substack.com/p/this-week-in-ai2">Signal Drifts</a> · <a href="https://aiweekly.co/ai-news-today/edition/2026-10-07">AI Weekly</a></div>
+  </div>
+</section>
+
+<section class="part" id="bubble">
+  <div class="wrap">
+    <div class="ph"><div class="n">04</div><div class="t">‘AI 거품’ 우려</div>
+      <div class="q">기술주 매도세와 AI 지출에 대한 의문</div></div>
+    <div class="tiles">
+      <div class="tile warn"><div class="k">오픈AI 투자 유치 목표</div><div class="v">$300→200<small>억</small></div><div class="d">목표를 낮춤 · CNBC</div></div>
+      <div class="tile warn"><div class="k">Character.AI</div><div class="v" style="font-size:clamp(24px,3.4vw,34px)">Chapter 11</div><div class="d">10.12 미국 파산보호 신청</div></div>
+      <div class="tile warn"><div class="k">IMF 경고</div><div class="v" style="font-size:clamp(24px,3.4vw,34px)">금융 안정</div><div class="d">AI 주식 조정이 흔들 수 있다</div></div>
+    </div>
+    <div class="src">출처 · <a href="https://cnbc.com/2026/10/31/openai-fundraising-20-billion-valuation.html">CNBC</a> · <a href="https://www.roobrief.com/ko/2026/10">roobrief</a></div>
+  </div>
+</section>
+
+<section class="part" id="security">
+  <div class="wrap">
+    <div class="ph"><div class="n">05</div><div class="t">AI 에이전트 보안 사고</div>
+      <div class="q">통제를 벗어난 에이전트, 그리고 국내 첫 검거</div></div>
+    <div class="cards">
+      <div class="card hot"><h4>위키미디어<small>해외</small></h4><p>‘통제를 벗어난’ 오픈AI 에이전트들이 자사 도구를 탐색하고 <b>서버에 과부하</b></p></div>
+      <div class="card"><h4>국내 첫 검거<small>10월 하순</small></h4><p>생성형 AI를 <b>악용한 해킹</b> 피의자 첫 검거</p></div>
+    </div>
+    <div class="verdict"><div class="lbl">EP.06에서 이어지는 실</div><p>트래픽은 매출이 아니라 서버비일 수 있다. 위키미디어가 그 비용을 실제로 맞았다.</p></div>
+    <div class="src">출처 · <a href="https://aiweekly.co/ai-news-today/edition/2026-10-07">AI Weekly</a> · <a href="https://asec.ahnlab.com/ko/96187/">ASEC(안랩)</a></div>
+  </div>
+</section>
+
+<section class="part" id="jobs">
+  <div class="wrap">
+    <div class="ph"><div class="n">06</div><div class="t">일자리와 규제</div>
+      <div class="q">숫자로 체감되기 시작한 변화</div></div>
+    <div class="tiles">
+      <div class="tile"><div class="k">마이크로소프트</div><div class="v">~6<small>만 명</small></div><div class="d">희망퇴직 제안</div></div>
+      <div class="tile"><div class="k">네덜란드 정부</div><div class="v">~2.5<small>만 명</small></div><div class="d">AI 활용 등으로 공무원 감축 계획</div></div>
+      <div class="tile"><div class="k">GitHub</div><div class="v">40<small>%+</small></div><div class="d">풀 리퀘스트를 <b>AI 에이전트가 시작</b></div></div>
+      <div class="tile"><div class="k">뉴욕주</div><div class="v" style="font-size:clamp(24px,3.4vw,34px)">아동 제한</div><div class="d">아동의 챗봇 이용 제한</div></div>
+    </div>
+    <div class="src">출처 · <a href="https://www.newegg.com/insider/ai-news-this-week-october-26-30-2026">Newegg</a> · <a href="https://www.artificialintelligence-news.com/">AI News</a> · <a href="https://signaldrifts.substack.com/p/this-week-in-ai2">Signal Drifts</a></div>
+
+    <div class="talk"><span class="lbl">이슈 분석 토론</span><ol>
+      <li>2조 달러 상장과 파산이 같은 달에 나왔다. 거품인가, 승자 정리인가?</li>
+      <li>Terra처럼 같은 성능이 10분의 1 값이 되면, 우리 일에서 뭐가 달라지나?</li>
+      <li>PR의 40%를 에이전트가 시작한다면, 내 일에서 그 비율은 몇 %쯤인가?</li>
+    </ol></div>
+  </div>
+</section>
+
+<section class="slab" aria-label="다음 순서">
+  <div class="wrap">
+    <div class="lbl">이어서</div>
+    <p>개인 경험 공유 → 신규 멤버 소개 →<br><span class="mk">현대자동차 공모전</span> 논의</p>
+    <div class="sub">거품이든 아니든, 우리는 일단 만든다.</div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fl"><a href="/topics/" style="color:inherit;border:0">← 일단, 브랜딩<span class="ast">*</span></a></div>
+    <p>2026년 10월 초부터 11월 초까지의 보도를 정리했다. 기업 발표와 주장(성능·비용·과학 성과)은 각 회사의 주장이며, 독립 검증 전인 내용이 섞여 있다.</p>
+  </div>
+</footer>
+</body>
+</html>
