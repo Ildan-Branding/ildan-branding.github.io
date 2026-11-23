@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0A0A0A">
+<title>EP.08 최근 AI 동향</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+/* 레이아웃: 한 패널에 한 키워드. 잉크 바탕 + 라임은 형광펜·마커로만, 핵심 명제는 페이퍼 반전 슬랩 */
+:root{
+  --ink:#0A0A0A; --ink2:#121212; --ink3:#1A1A1A; --line:#2A2A28;
+  --paper:#F4F1E8; --muted:#A09E95; --faint:#65635D;
+  --lime:#C8FF3D; --lime-soft:#E4FF8A; --lime-dim:rgba(200,255,61,.12);
+  --warn:#FF6B5B; --warn-dim:rgba(255,107,91,.12);
+  --sans:"Gothic A1","Pretendard","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --maxw:1120px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--sans);font-size:17px;line-height:1.7;
+  -webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:break-word}
+.wrap{max-width:var(--maxw);margin:0 auto;padding-inline:20px}
+a{color:var(--lime);text-decoration:none;border-bottom:1px solid rgba(200,255,61,.3)}
+a:hover{border-bottom-color:var(--lime)}
+:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
+::selection{background:var(--lime);color:var(--ink)}
+.mk{background:var(--lime);color:var(--ink);padding:0 .14em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.hl{color:var(--lime)}
+.mono{font-family:var(--mono)}
+
+/* 내비 */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(10,10,10,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;gap:6px;overflow-x:auto;padding-block:10px;scrollbar-width:none}
+.nav .wrap::-webkit-scrollbar{display:none}
+.nav a{flex:0 0 auto;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:700;color:var(--muted);white-space:nowrap}
+.nav a b{font-family:var(--mono);font-weight:500;color:var(--lime);margin-right:6px}
+.nav a:hover{border-color:var(--lime);color:var(--paper)}
+
+/* 커버 */
+.cover{padding-block:72px 56px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;font-weight:900;font-size:16px;letter-spacing:-.02em}
+.brand .ast{color:var(--lime)}
+.brand .ep{margin-left:auto;font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.2em;color:var(--faint)}
+.cover h1{margin:48px 0 0;font-weight:900;font-size:clamp(36px,7.4vw,84px);line-height:1.1;letter-spacing:-.045em;text-wrap:balance}
+.cover h1 em{font-style:normal;color:var(--lime)}
+.kw{display:flex;flex-wrap:wrap;gap:8px;margin-top:34px}
+.kw span{font-family:var(--mono);font-size:13px;font-weight:500;letter-spacing:.06em;padding:7px 14px;border:1px solid var(--lime);color:var(--lime);border-radius:999px}
+.meta{display:flex;flex-wrap:wrap;gap:8px 28px;margin-top:30px;font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;color:var(--muted)}
+.meta b{color:var(--paper);font-weight:500}
+
+/* 페이퍼 반전 슬랩 */
+.slab{background:var(--paper);color:var(--ink);padding-block:56px}
+.slab .lbl{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.24em;color:#6B685F}
+.slab p{margin:14px 0 0;font-weight:900;font-size:clamp(26px,4.6vw,50px);line-height:1.22;letter-spacing:-.04em;text-wrap:balance}
+.slab .sub{margin-top:14px;font-size:16px;font-weight:500;letter-spacing:0;color:#55534C;line-height:1.6}
+
+/* 파트 */
+.part{padding-block:72px;border-bottom:1px solid var(--line)}
+.ph{display:grid;grid-template-columns:auto 1fr;gap:6px 20px;align-items:end;margin-bottom:40px}
+.ph .n{font-family:var(--mono);font-weight:700;font-size:clamp(48px,9vw,96px);line-height:.8;color:var(--lime);letter-spacing:-.05em}
+.ph .t{font-weight:900;font-size:clamp(28px,5vw,52px);line-height:1.1;letter-spacing:-.04em;text-wrap:balance}
+.ph .q{grid-column:1/-1;font-size:17px;color:var(--muted);font-weight:500;margin-top:10px}
+
+.blk{margin-top:56px}
+.blk:first-of-type{margin-top:0}
+.bh{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.bh h3{margin:0;font-weight:800;font-size:clamp(22px,3.2vw,30px);letter-spacing:-.03em;line-height:1.25;text-wrap:balance}
+.bh .tag{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.14em;color:var(--faint);text-transform:uppercase}
+.lead{font-size:18px;color:var(--muted);max-width:60ch;margin:0 0 20px}
+.lead b{color:var(--paper);font-weight:700}
+
+/* 숫자 타일 */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.tile{background:var(--ink2);padding:22px 22px 20px;min-width:0}
+.tile .k{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+.tile .v{font-family:var(--mono);font-weight:700;font-size:clamp(34px,5vw,48px);line-height:1.05;letter-spacing:-.03em;margin-top:10px;color:var(--lime);font-variant-numeric:tabular-nums}
+.tile .v small{font-size:.42em;color:var(--muted);font-weight:500;letter-spacing:0;margin-left:4px}
+.tile .d{margin-top:8px;font-size:14px;color:var(--muted);line-height:1.5}
+.tile .d b{color:var(--paper);font-weight:700}
+.tile.warn .v{color:var(--warn)}
+
+/* 키워드 카드 */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.card{border:1px solid var(--line);background:var(--ink2);padding:20px;min-width:0}
+.card h4{margin:0;font-weight:800;font-size:20px;letter-spacing:-.02em}
+.card h4 small{display:block;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.12em;color:var(--faint);margin-top:3px}
+.card p{margin:10px 0 0;font-size:15px;color:var(--muted);line-height:1.6}
+.card p b{color:var(--paper);font-weight:700}
+.card.hot{border-color:var(--lime);background:var(--lime-dim)}
+
+/* 두 칸 대비 */
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.col{border:1px solid var(--line);padding:22px;background:var(--ink2);min-width:0}
+.col .lbl{font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.18em;color:var(--muted)}
+.col h4{margin:6px 0 14px;font-weight:900;font-size:22px;letter-spacing:-.03em}
+.col ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px}
+.col li{font-size:16px;font-weight:600;padding-left:18px;position:relative;line-height:1.45}
+.col li::before{content:"";position:absolute;left:0;top:.62em;width:8px;height:2px;background:var(--faint)}
+.col.in{border-top:3px solid var(--muted)}
+.col.out{border-top:3px solid var(--lime)}
+.col.out li::before{background:var(--lime)}
+@media (max-width:680px){.vs{grid-template-columns:1fr}}
+
+/* 가로 막대 */
+.bars{display:flex;flex-direction:column;gap:12px;max-width:760px}
+.bar{display:grid;grid-template-columns:150px 1fr 64px;gap:14px;align-items:center}
+.bar .nm{font-size:14.5px;font-weight:700;min-width:0}
+.bar .tr{height:14px;background:var(--ink3);position:relative}
+.bar .tr i{position:absolute;inset:0 auto 0 0;background:var(--faint)}
+.bar.me .tr i{background:var(--lime)}
+.bar .vl{font-family:var(--mono);font-weight:700;font-size:15px;text-align:right;font-variant-numeric:tabular-nums}
+.bar.me .vl{color:var(--lime)}
+.cap{margin-top:12px;font-size:13px;color:var(--faint);line-height:1.6;max-width:70ch}
+@media (max-width:520px){.bar{grid-template-columns:1fr 56px;gap:4px 10px}.bar .tr{grid-column:1/-1;grid-row:2}}
+
+/* 사다리 */
+.ladder{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.step{border:1px solid var(--line);background:var(--ink2);padding:16px 14px 18px;position:relative;min-width:0}
+.step .lv{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--faint)}
+.step b{display:block;margin-top:6px;font-weight:900;font-size:18px;letter-spacing:-.02em}
+.step span{display:block;margin-top:4px;font-size:13px;color:var(--muted);line-height:1.45}
+.step.now{border-color:var(--lime);background:var(--lime-dim)}
+.step.now .lv{color:var(--lime)}
+.step.goal{border-style:dashed}
+.pin{display:inline-block;margin-top:10px;font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.06em;padding:3px 8px;background:var(--lime);color:var(--ink)}
+.pin.ghost{background:transparent;color:var(--muted);border:1px dashed var(--faint)}
+@media (max-width:760px){.ladder{grid-template-columns:1fr}}
+
+/* 인과 사슬 */
+.chain{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.link{border:1px solid var(--line);background:var(--ink2);padding:22px;min-width:0;position:relative}
+.link .id{font-family:var(--mono);font-weight:700;font-size:34px;color:var(--lime);line-height:1}
+.link h4{margin:10px 0 0;font-weight:900;font-size:22px;letter-spacing:-.03em}
+.link p{margin:8px 0 0;font-size:15px;color:var(--muted);line-height:1.55}
+.link p b{color:var(--paper)}
+.sum{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:12px}
+.sum div{background:var(--ink);padding:14px 18px;font-size:15px;font-weight:700;min-width:0}
+.sum div span{display:block;font-family:var(--mono);font-size:12px;color:var(--faint);font-weight:500;letter-spacing:.08em}
+.sum div.win{background:var(--lime);color:var(--ink)}
+.sum div.win span{color:#3C4A12}
+@media (max-width:760px){.chain,.sum{grid-template-columns:1fr}}
+
+/* 표 */
+.tw{overflow-x:auto;border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:15px}
+th,td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);background:var(--ink2)}
+tbody tr:last-child td,tbody tr:last-child th{border-bottom:0}
+tbody th{font-weight:800}
+td.n{font-family:var(--mono);font-weight:700;font-variant-numeric:tabular-nums;color:var(--lime);white-space:nowrap}
+td small,th small{display:block;font-size:12.5px;color:var(--faint);font-weight:400;margin-top:2px}
+
+/* 인용 */
+.quotes{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.qt{border-left:3px solid var(--line);padding:4px 0 4px 16px}
+.qt p{margin:0;font-weight:700;font-size:17px;line-height:1.5;letter-spacing:-.01em}
+.qt cite{display:block;margin-top:8px;font-style:normal;font-family:var(--mono);font-size:12px;color:var(--faint);letter-spacing:.04em}
+.qt.claim{border-left-color:var(--lime)}
+
+/* 주의 / 반론 */
+.warnbox{border:1px solid rgba(255,107,91,.4);background:var(--warn-dim);padding:22px}
+.warnbox .lbl{font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.2em;color:var(--warn)}
+.warnbox ol{margin:12px 0 0;padding:0;list-style:none;counter-reset:w;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px 22px}
+.warnbox li{counter-increment:w;min-width:0}
+.warnbox li b{display:block;font-weight:900;font-size:17px}
+.warnbox li b::before{content:counter(w) "  ";font-family:var(--mono);color:var(--warn)}
+.warnbox li span{display:block;margin-top:4px;font-size:14.5px;color:var(--muted);line-height:1.5}
+
+/* 결론 한 줄 */
+.verdict{margin-top:40px;padding:26px 26px;background:var(--lime);color:var(--ink)}
+.verdict .lbl{font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.2em;color:#3C4A12}
+.verdict p{margin:8px 0 0;font-weight:900;font-size:clamp(22px,3.4vw,32px);line-height:1.3;letter-spacing:-.035em;text-wrap:balance}
+
+/* 토론 */
+.talk{margin-top:40px;border:1px dashed var(--faint);padding:22px 24px}
+.talk .lbl{font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.2em;color:var(--lime)}
+.talk ol{margin:12px 0 0;padding-left:22px;display:flex;flex-direction:column;gap:10px}
+.talk li{font-size:17px;font-weight:600;line-height:1.5}
+.talk li::marker{font-family:var(--mono);color:var(--lime)}
+
+/* 좌표 */
+.axes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.ax{border:1px solid var(--line);background:var(--ink2);padding:20px;min-width:0}
+.ax h4{margin:0;font-weight:900;font-size:20px;letter-spacing:-.02em}
+.ax p{margin:6px 0 16px;font-size:14.5px;color:var(--muted)}
+.dots{display:flex;justify-content:space-between;gap:4px}
+.dots span{flex:1;height:30px;border:1px solid var(--line);display:grid;place-items:center;font-family:var(--mono);font-size:12px;color:var(--faint)}
+.dots span:last-child{border-color:var(--lime);color:var(--lime)}
+.ends{display:flex;justify-content:space-between;margin-top:6px;font-size:12px;color:var(--faint)}
+@media (max-width:760px){.axes{grid-template-columns:1fr}}
+
+/* 출처 */
+footer{padding-block:56px 80px}
+footer .fl{font-weight:900;font-size:16px}
+footer .fl .ast{color:var(--lime)}
+footer p{font-size:13.5px;color:var(--faint);max-width:72ch;line-height:1.7}
+.srcs{margin-top:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px}
+.srcs h6{margin:0 0 8px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.18em;color:var(--muted)}
+.srcs ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:5px}
+.srcs li{font-size:13px;line-height:1.5}
+.srcs a{color:var(--muted);border-bottom-color:var(--line)}
+.srcs a:hover{color:var(--lime)}
+</style>
+<style>
+.agenda{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:30px}
+.agenda div{background:var(--ink2);padding:16px 18px;min-width:0}
+.agenda div span{display:block;font-family:var(--mono);font-size:12px;color:var(--lime);letter-spacing:.08em}
+.agenda div b{display:block;margin-top:4px;font-size:16px;font-weight:800;letter-spacing:-.02em}
+.agenda div.now{background:var(--lime-dim);box-shadow:inset 0 3px 0 var(--lime)}
+@media (max-width:760px){.agenda{grid-template-columns:1fr 1fr}}
+.src{margin-top:10px;font-family:var(--mono);font-size:11.5px;color:var(--faint);letter-spacing:.02em}
+.src a{color:var(--faint);border-bottom-color:var(--line)}
+.src a:hover{color:var(--lime)}
+</style>
+</head>
+<body>
+<nav class="nav" aria-label="이슈 이동">
+  <div class="wrap">
+    <a href="#models"><b>01</b>써봐야 안다</a>
+    <a href="#math"><b>02</b>수학의 특이점</a>
+    <a href="#agents"><b>03</b>에이전트 현황</a>
+    <a href="#native"><b>04</b>AI 네이티브</a>
+    <a href="#ax"><b>05</b>국내 AX</a>
+    <a href="#ipo"><b>06</b>앤트로픽 상장</a>
+    <a href="#bubble"><b>07</b>거품론</a>
+  </div>
+</nav>
+
+<header class="cover">
+  <div class="wrap">
+    <div class="brand"><a href="/topics/" style="color:inherit;border:0">일단, 브랜딩<span class="ast">*</span></a><span class="ep">EP.08 · 12.03 (목) 21:00</span></div>
+    <h1>AI가 난제를 풀었다는데,<br>아무도 <em>이해 못 하는</em> 답도 답일까?</h1>
+    <div class="kw" aria-label="최근 키워드">
+      <span>RIEMANN HYPOTHESIS</span><span>BIG 3 LINEUP</span><span>AGENT ROI</span><span>AX</span><span>ANTHROPIC IPO</span>
+    </div>
+    <div class="agenda" aria-label="진행 순서">
+      <div class="now"><span>00:00</span><b>최근 AI 동향</b></div>
+      <div><span>00:40</span><b>각자의 활용과 고민</b></div>
+      <div><span>01:00</span><b>이해 못 하는 답을 믿을 수 있나</b></div>
+      <div><span>01:25</span><b>다음 주제 정하기</b></div>
+    </div>
+    <div class="meta"><span>범위 <b>2026.11.06 ~ 11.23</b></span><span>진행 <b>수다 · 발표 없음</b></span></div>
+  </div>
+</header>
+
+<section class="slab" aria-label="한 달 요약">
+  <div class="wrap">
+    <div class="lbl">이번 달을 한 줄로</div>
+    <p>AI는 <span class="mk">167년 난제</span>를 풀었다는데,<br>기업은 아직 일하는 방식을 못 바꿨다.</p>
+    <div class="sub">답은 점점 빨리 나온다. 그 답을 이해하고, 믿고, 일에 붙이는 건 여전히 사람의 몫이다.</div>
+  </div>
+</section>
+
+<section class="part" id="models">
+  <div class="wrap">
+    <div class="ph"><div class="n">01</div><div class="t">빅3 라인업 전쟁 — 새 모델은 써봐야 안다</div>
+      <div class="q">2주 사이 세 회사가 모두 새 라인업을 냈다</div></div>
+    <div class="cards">
+      <div class="card"><h4>Claude Fable 5.2<small>ANTHROPIC · 11.09</small></h4><p>응답 최대 <b>30% 빠르고</b> 가격 <b>20% 인하</b></p></div>
+      <div class="card"><h4>Gemini 4 Hydrogen · Neon<small>GOOGLE · 11.12~18</small></h4><p>Carbon까지 <b>고급·표준·경량 3단</b> 라인업 완성</p></div>
+      <div class="card"><h4>GPT-6.2 Astra · Sol<small>OPENAI · 11.17</small></h4><p>최상위 Astra와 <b>저가 Sol</b>을 동시 공개</p></div>
+    </div>
+    <div class="cards" style="margin-top:12px">
+      <div class="card hot"><h4>EP.07에서 이어지는 실</h4><p>GPT-6.1 Terra · Gemini 4 Carbon 한 달 만에 또 한 바퀴. 성능 차이는 좁아지고 <b>가격·속도·포지셔닝</b> 싸움이 됐다</p></div>
+      <div class="card hot"><h4>우리 사례<small>OPUS 5.5 · 09.22 → 09.29</small></h4><p>Opus 5.5가 나오고 <b>일주일 만에</b> 우리 사이트 히어로에 모션그래픽이 들어갔다. 엄두를 못 내던 작업이 모델 한 번에 <b>해볼 만한 일</b>이 됐다</p></div>
+    </div>
+    <div class="verdict"><div class="lbl">인사이트</div><p>따라가기 벅차도 직접 써봐야 한다. 최신 모델의 장단점을 몸으로 겪어야 내가 뭘 할 수 있고 뭘 못 하는지 경계선이 보인다.</p></div>
+    <div class="src">출처 · <a href="https://www.cnbc.com/2026/11/09/anthropic-claude-fable-5-2-mythos-5-2.html">CNBC</a> · <a href="https://www.datacamp.com/blog/gpt-6-2-astra-vs-gemini-4-carbon">DataCamp</a> · <a href="https://www.bnnbloomberg.ca/business/artificial-intelligence/2026/09/22/anthropic-unveils-claude-opus-55/">BNN Bloomberg</a></div>
+  </div>
+</section>
+
+<section class="part" id="math">
+  <div class="wrap">
+    <div class="ph"><div class="n">02</div><div class="t">AI가 난제를 풀기 시작했다</div>
+      <div class="q">수학계에서는 이미 특이점이 시작됐다고 볼 수 있다</div></div>
+    <div class="bh"><h3>리만 가설 증명 주장</h3><span class="tag">11.20~ · Anthropic 알포게 + Claude</span></div>
+    <p class="lead">소수의 분포에 관한 <b>167년 된 밀레니엄 난제</b>. AI가 쓴 설명이 25만 쪽을 넘어, 사람이 읽을 논문 대신 <b>Lean 증명 코드</b>로 공개했다.</p>
+    <div class="tiles">
+      <div class="tile"><div class="k">문제의 나이</div><div class="v">167<small>년</small></div><div class="d">밀레니엄 문제 · 상금 100만 달러</div></div>
+      <div class="tile"><div class="k">AI가 쓴 설명</div><div class="v">25<small>만 쪽+</small></div><div class="d">사람이 읽는 논문은 <b>포기</b></div></div>
+      <div class="tile"><div class="k">Lean 증명 코드</div><div class="v">1,740<small>만 줄</small></div><div class="d">17만여 모듈 <b>기계 검증 통과</b></div></div>
+    </div>
+    <div class="quotes" style="margin-top:24px">
+      <div class="qt claim"><p>“명제와 증명 모두 옳다고 전적으로 확신한다.”</p><cite>Lean · Mathlib 커뮤니티 성명 (11.21, 보도 기준)</cite></div>
+      <div class="qt"><p>“AI가 내 이해를 앞질렀다.”</p><cite>레벤트 알포게</cite></div>
+      <div class="qt"><p>답은 나왔다. 인간은 그 답을 이해할 수 있을까?</p><cite>Science 기사 제목 요지</cite></div>
+    </div>
+
+    <div class="blk">
+      <div class="bh"><h3>올해 쌓인 흐름</h3><span class="tag">2026</span></div>
+      <div class="tw"><table>
+        <thead><tr><th>시점</th><th>무엇</th><th>상태</th></tr></thead>
+        <tbody>
+          <tr><td class="n">01월</td><th>에르되시 #728 <small>Harmonic Aristotle</small></th><td>AI 단독 해결로 처음 인정</td></tr>
+          <tr><td class="n">05월</td><th>에르되시 단위거리 추측 반증 <small>OpenAI</small></th><td>수학자 9명 확인 논문 · 반복 시 정답률 절반</td></tr>
+          <tr><td class="n">09월</td><th>나비에-스토크스 해법 <small>OpenAI · 에이전트 약 1만 개</small></th><td>클레이 “겉보기엔 해결된 듯” · 공식 인정 보류</td></tr>
+          <tr><td class="n">11.08</td><th>60년 된 에르되시 #1196 <small>포럼 사용자 + AI</small></th><td>80분 만에 풀고, 그 기법이 다른 문제까지</td></tr>
+          <tr><td class="n">11.09</td><th>블랙홀 물리 난제 2건 <small>Claude Fable 5.2</small></th><td>23년 묵은 계산 일부 완성 · 동료 심사 전</td></tr>
+          <tr><td class="n">11.20</td><th>리만 가설 <small>알포게 + Claude</small></th><td>기계 검증 통과 · 클레이 인정엔 게재 + 2년</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="blk">
+      <div class="warnbox"><div class="lbl">아직 남은 것</div><ol>
+        <li><b>코드 ≠ 이해</b><span>컴파일이 된다는 것과 사람이 이해했다는 건 다른 문제</span></li>
+        <li><b>공식 인정</b><span>클레이 연구소는 학술지 게재 + 2년 검증을 요구</span></li>
+        <li><b>공은 누구에게</b><span>알포게, Claude, Anthropic? 9월 나비에-스토크스 때도 같은 논쟁</span></li>
+      </ol></div>
+    </div>
+    <div class="verdict"><div class="lbl">읽는 법</div><p>1년 만에 “에르되시 문제 하나”에서 “밀레니엄 난제”까지. 이제 질문은 AI가 풀 수 있나가 아니라, 사람이 그 답을 검증할 수 있나다.</p></div>
+    <div class="src">출처 · <a href="https://www.science.org/content/article/ai-may-have-solved-math-s-greatest-mystery-can-humans-understand-answer">Science</a> · <a href="https://www.hankyung.com/article/2026112112857">한국경제</a> · <a href="https://officechai.com/ai/how-mathematicians-have-reacted-to-claimed-riemann-hypothesis-proof-by-anthropics-levent-alpoge/">OfficeChai</a> · <a href="https://www.anthropic.com/research/claude-black-hole-physics">Anthropic</a> · <a href="https://www.scientificamerican.com/article/did-openai-solve-the-wrong-navier-stokes-problem/">Scientific American</a> · <a href="https://www.quantamagazine.org/why-the-legendary-erdos-problems-are-falling-to-ai-20260803/">Quanta</a></div>
+  </div>
+</section>
+
+<section class="part" id="agents">
+  <div class="wrap">
+    <div class="ph"><div class="n">03</div><div class="t">에이전트 도입 현황</div>
+      <div class="q">다들 쓰는데, 성과를 본 곳은 소수</div></div>
+    <div class="tiles">
+      <div class="tile"><div class="k">에이전트 사용·테스트</div><div class="v">88<small>%</small></div><div class="d">기업 기준 · Zapier</div></div>
+      <div class="tile warn"><div class="k">의미 있는 ROI</div><div class="v">23<small>%</small></div><div class="d">임원 48%는 “큰 실망” · WRITER</div></div>
+      <div class="tile warn"><div class="k">프로젝트 중단</div><div class="v">54<small>%</small></div><div class="d">사업 가치 불분명 · 11.17 발표</div></div>
+      <div class="tile warn"><div class="k">비용 초과 경험</div><div class="v">89<small>%</small></div><div class="d">SnapLogic</div></div>
+    </div>
+    <div class="verdict"><div class="lbl">읽는 법</div><p>“에이전트 도입”은 흔해졌지만 실제로 굴러가는 곳은 10~20%대. 차이는 도구가 아니라 무엇을 맡길지 정하는 설계에서 난다.</p></div>
+    <div class="src">출처 · <a href="https://zapier.com/blog/ai-agents-survey/">Zapier</a> · <a href="https://writer.com/blog/enterprise-ai-adoption-2026/">WRITER</a> · <a href="https://www.globenewswire.com/news-release/2026/11/17/3404301/0/en/new-research-reveals-54-of-enterprises-have-abandoned-agentic-ai-projects-due-to-unclear-business-value.html">GlobeNewswire</a></div>
+  </div>
+</section>
+
+<section class="part" id="native">
+  <div class="wrap">
+    <div class="ph"><div class="n">04</div><div class="t">AI 네이티브 스타트업</div>
+      <div class="q">적은 인원, 큰 매출</div></div>
+    <div class="tiles">
+      <div class="tile"><div class="k">1인당 매출</div><div class="v">$40<small>만+</small></div><div class="d">AI 네이티브 스타트업 절반 이상 · AWS</div></div>
+      <div class="tile"><div class="k">연 성장률</div><div class="v">156<small>%</small></div><div class="d">일반 스타트업은 65%</div></div>
+      <div class="tile"><div class="k">Lovable</div><div class="v">146<small>명</small></div><div class="d">연 매출(ARR) <b>$4억</b></div></div>
+      <div class="tile"><div class="k">Midjourney</div><div class="v">~11<small>명</small></div><div class="d">매출 약 <b>$2억</b></div></div>
+    </div>
+    <div class="verdict"><div class="lbl">읽는 법</div><p>회사의 크기가 사람 수에서 한 명이 굴리는 에이전트 수로 바뀌고 있다. 작은 팀에게는 기회다.</p></div>
+    <div class="src">출처 · <a href="https://press.aboutamazon.com/2026/6/aws-global-startup-trends-report-reveals-ai-native-startups-are-reaching-billion-dollar-valuations-in-half-the-time">AWS</a> · <a href="https://www.forbes.com/sites/paulbaier/2026/03/31/ai-native-firms-lead-in-revenue-per-employee/">Forbes</a></div>
+  </div>
+</section>
+
+<section class="part" id="ax">
+  <div class="wrap">
+    <div class="ph"><div class="n">05</div><div class="t">국내 AX 실무 — 도입은 70%, 정착은 12%</div>
+      <div class="q">잘 된 곳은 AI를 붙인 게 아니라 일을 다시 쪼갰다</div></div>
+    <div class="bars" aria-label="국내 AX 단계별 비율">
+      <div class="bar"><span class="nm">AI 도입</span><span class="tr"><i style="width:69.5%"></i></span><span class="vl">69.5%</span></div>
+      <div class="bar me"><span class="nm">업무 표준으로 정착</span><span class="tr"><i style="width:12.5%"></i></span><span class="vl">12.5%</span></div>
+      <div class="bar"><span class="nm">전사 차원 도입</span><span class="tr"><i style="width:5.3%"></i></span><span class="vl">5.3%</span></div>
+    </div>
+    <p class="cap">도입·정착은 조코딩AX파트너스(2,078곳), 전사 도입은 원티드랩 조사. 조사마다 대상과 정의가 달라 흐름으로만 볼 것. 도입 실행률은 대기업 76% · 중견 50% · 중소 46%(팀스파르타).</p>
+
+    <div class="blk">
+      <div class="bh"><h3>현장 사례</h3><span class="tag">회사 발표 기준</span></div>
+      <div class="cards">
+        <div class="card hot"><h4>LG유플러스</h4><p>개발 작업 <b>2,390분 → 480분</b>. 업무를 잘게 쪼개 AI가 혼자 처리할 부분을 떼어낸 결과</p></div>
+        <div class="card hot"><h4>SK텔레콤</h4><p>초기엔 오히려 <b>시간이 늘었다가</b> 개선 끝에 대폭 단축 — <b>J커브</b>. 전 구성원 “1인 1에이전트” 장려</p></div>
+        <div class="card"><h4>KT</h4><p>예측 모델 개발 수개월 → <b>약 3주</b>. 재무실은 법인카드 문의 자동 응답. 에이전트별 <b>토큰 예산 포털</b>까지</p></div>
+        <div class="card"><h4>베스핀글로벌</h4><p>사내 에이전트 <b>511개</b> 상시 가동, 연 3만 6,800시간 절감</p></div>
+        <div class="card"><h4>SK에코플랜트</h4><p>설계 AI 플랫폼 ‘AXen’ 도입, <b>“1인 1에이전트”</b> 목표</p></div>
+        <div class="card"><h4>채널코퍼레이션</h4><p>개발팀에서 코드 작성·리뷰 <b>약 90%</b> 자동화 후 전사로</p></div>
+      </div>
+      <div class="quotes" style="margin-top:20px">
+        <div class="qt claim"><p>“사람이 하던 방식대로 설계하면 절대 성과가 안 난다.”</p><cite>KT 박기철 상무 · 2026 뉴테크포럼</cite></div>
+      </div>
+    </div>
+
+    <div class="blk">
+      <div class="warnbox"><div class="lbl">막히는 곳은 기술이 아니다</div><ol>
+        <li><b>사람</b><span>전문 인력 부족 53% · 직원 간 활용 격차 55% · 교육 후 실무 적용 어려움 82%</span></li>
+        <li><b>전략</b><span>로드맵 부재 51% · 경영진의 기대와 현실 차이가 조직문화 장벽 1위</span></li>
+        <li><b>책임</b><span>PoC는 성공했는데 운영 담당이 없어 사라진다. 실패 대부분은 ‘단순 도구’로 들인 경우</span></li>
+        <li><b>데이터·보안</b><span>정보 유출 우려 52% · 보안 지침 부족 47% · 데이터 거버넌스만 6개월~1년</span></li>
+        <li><b>HWP</b><span>한국 특유의 장벽 — 모델보다 입력 포맷이 먼저 막힌다</span></li>
+        <li><b>에이전트 스프롤</b><span>만들기는 쉬운데 관리가 안 돼 보안·요금 문제로</span></li>
+        <li><b>중소기업</b><span>“우리 업종에 맞는 활용 사례가 없다” 49%</span></li>
+      </ol></div>
+    </div>
+    <div class="verdict"><div class="lbl">읽는 법</div><p>큰 조직의 AX는 책임과 거버넌스의 문제, 작은 팀의 AX는 설계 속도의 문제다.</p></div>
+    <div class="src">출처 · <a href="https://www.metroseoul.co.kr/article/20261119500372">메트로신문(뉴테크포럼)</a> · <a href="https://www.hankookilbo.com/news/article/A2026102210490003384">한국일보</a> · <a href="https://ditoday.com/%EA%B8%B0%EC%97%85-ax-%EA%B0%9C%EC%9D%B8-%ED%99%9C%EC%9A%A9-%EB%AA%BB%EB%94%B0%EB%9D%BC%EC%99%80-2026-ax-%EC%9D%B8%EC%82%AC%EC%9D%B4%ED%8A%B8-%EB%A6%AC%ED%8F%AC%ED%8A%B8/">디지털인사이트(원티드랩)</a> · <a href="https://kleaders.com/news/view.php?no=1021">월간리더스(조코딩AX)</a> · <a href="https://sports.khan.co.kr/article/202608080534003/">스포츠경향(팀스파르타)</a> · <a href="https://www.samsungsds.com/kr/insights/enterprise-genai-usage-survey_part2.html">삼성SDS</a> · <a href="https://v.daum.net/v/20260511172133437">다음(초거대AI추진협의회)</a> · <a href="https://www.aitimes.com/news/articleView.html?idxno=210892">AI타임스</a> · <a href="https://www.econovill.com/news/articleView.html?idxno=754168">이코노믹리뷰</a> · <a href="https://www.issuetoday.co.kr/news/article.html?no=61741">이슈투데이</a> · <a href="https://v.daum.net/v/20260102071749936?f=p">다음(채널코퍼레이션)</a> · <a href="https://m.news.nate.com/view/20261105n39504">네이트</a></div>
+  </div>
+</section>
+
+<section class="part" id="ipo">
+  <div class="wrap">
+    <div class="ph"><div class="n">06</div><div class="t">앤트로픽 상장</div>
+      <div class="q">11월 19일 나스닥 · 티커 “ANT” · 역대 최대 IPO</div></div>
+    <div class="tiles">
+      <div class="tile"><div class="k">공모가</div><div class="v">$83</div><div class="d">시초가 <b>$111.50</b></div></div>
+      <div class="tile"><div class="k">첫날 종가</div><div class="v">+17<small>%</small></div><div class="d">$97.17 · 장중 시총 2조 달러 돌파</div></div>
+      <div class="tile warn"><div class="k">이튿날</div><div class="v">-9<small>%</small></div><div class="d">반도체 급락장에 휩쓸림</div></div>
+    </div>
+    <div class="cards" style="margin-top:12px">
+      <div class="card hot"><h4>EP.07에서 이어지는 실</h4><p>10월 말 상장 신고서 → 실제 상장. 지난 6월 SpaceX를 넘어 <b>역사상 가장 큰 IPO</b></p></div>
+    </div>
+    <div class="src">출처 · <a href="https://www.cbsnews.com/news/anthropic-ipo-nasdaq-debut-claude-ai/">CBS News</a> · <a href="https://www.forbes.com/sites/fionariley/2026/11/19/anthropic-ipo-live-nasdaq-futures-jump-2-ahead-of-record-stock-debut/">Forbes</a> · <a href="https://www.seoul.co.kr/news/international/2026/11/23/20261123500293">서울신문</a></div>
+  </div>
+</section>
+
+<section class="part" id="bubble">
+  <div class="wrap">
+    <div class="ph"><div class="n">07</div><div class="t">거품론이 숫자로</div>
+      <div class="q">사상 최대 IPO와 반도체 폭락이 같은 주에</div></div>
+    <div class="tiles">
+      <div class="tile warn"><div class="k">필라델피아 반도체지수</div><div class="v">-11<small>%</small></div><div class="d">11.20 하루 · 8개월 만의 최저</div></div>
+      <div class="tile warn"><div class="k">S&amp;P 500</div><div class="v">7<small>일 연속</small></div><div class="d">하락</div></div>
+      <div class="tile warn"><div class="k">머스크 경고</div><div class="v" style="font-size:clamp(24px,3.4vw,34px)">돈줄 마른다</div><div class="d">“내년 AI 업계 현금 사정 악화”</div></div>
+    </div>
+    <div class="cards" style="margin-top:12px">
+      <div class="card hot"><h4>EP.07에서 이어지는 실</h4><p>지난 화의 “거품인가, 정리인가”가 숫자로. <b>03 에이전트 현황</b>과 같은 이야기 — 돈은 몰리는데 성과를 증명한 곳은 아직 적다</p></div>
+    </div>
+    <div class="src">출처 · <a href="https://www.seoul.co.kr/news/international/2026/11/23/20261123500293">서울신문</a> · <a href="https://grafa.com/en/news/united-states/us-semiconductor-stocks-selloff-ai-trade-unwind-november-2026">Grafa</a></div>
+
+    <div class="talk"><span class="lbl">토론</span><ol>
+      <li>아무도 읽을 수 없는 25만 쪽짜리 증명을 “해결”이라 부를 수 있을까? 기계 검증만으로 충분할까?</li>
+      <li>우리 일로 가져오면, AI가 만든 결과물을 다 이해하지 못한 채 내놓아도 될까?</li>
+      <li>지난 한 달 새 모델을 써보고 새로 할 수 있게 된 것과, 여전히 못 하는 것은?</li>
+      <li>절반이 에이전트를 접는데 1인당 수십억 원을 버는 팀도 있다. 우리 모임에서 “1인 1에이전트”를 해본다면, 각자 뭘 맡길까?</li>
+    </ol></div>
+  </div>
+</section>
+
+<section class="slab" aria-label="다음 순서">
+  <div class="wrap">
+    <div class="lbl">이어서</div>
+    <p>각자의 활용과 고민 → 이해 못 하는 답을 믿을 수 있나 →<br><span class="mk">다음 주제</span> 정하기</p>
+    <div class="sub">공모전은 끝났다. 써보고, 쪼개보고, 일단 다시 만든다.</div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fl"><a href="/topics/" style="color:inherit;border:0">← 일단, 브랜딩<span class="ast">*</span></a></div>
+    <p>2026년 11월 6일부터 11월 23일까지의 보도를 정리했다. 리만 가설·블랙홀 등 과학 성과는 동료 심사나 공식 인정 전이고, 설문 수치는 대부분 업체 조사로 대상과 정의가 서로 다르다. 기업 사례 수치는 각 회사의 발표다.</p>
+  </div>
+</footer>
+</body>
+</html>
