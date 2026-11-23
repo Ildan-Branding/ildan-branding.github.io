@@ -281,6 +281,43 @@ export const episodes: Episode[] = [
       },
     ],
     material: { href: "/materials/ep07.html", label: "EP.07 지난 이슈 보기" },
+    status: "done",
+  },
+  {
+    ep: 8,
+    badge: "EP.08",
+    date: "12월 3일 (목) 오후 9:00",
+    dateLabel: "여덟 번째 에피소드",
+    question: "AI가 난제를 풀었다는데, 아무도 이해 못 하는 답도 답일까?",
+    copy: "리만 가설 · 빅3 라인업 · AX 현황 · 앤트로픽 상장 — 이번 달은 답보다 믿음이 문제였다.",
+    // EP.07처럼 공통 오프닝 대신 최근 동향을 길게 잡는다. 공모전이 끝나 다음 주제를 새로 정한다.
+    segments: [
+      {
+        at: "00:00",
+        title: "최근 AI 동향",
+        desc: "빅3 라인업 · 수학 난제 · 에이전트 도입 현황 · 국내 AX · 앤트로픽 상장 · 거품론",
+        highlight: "수학 난제",
+      },
+      {
+        at: "00:40",
+        title: "각자의 활용과 고민",
+        desc: "새 모델을 직접 써보고 알게 된 것 — 할 수 있는 것과 못 하는 것의 경계",
+        highlight: "직접 써보고",
+      },
+      {
+        at: "01:00",
+        title: "이해 못 하는 답을 믿을 수 있나",
+        desc: "25만 쪽짜리 증명과 정착 못 한 AX — 검증과 신뢰를 우리 일로 가져오기",
+        highlight: "검증과 신뢰",
+      },
+      {
+        at: "01:25",
+        title: "다음 주제 정하기",
+        desc: "현대자동차 공모전이 끝났다. 다음에 무엇을 만들까",
+        highlight: "다음에 무엇을 만들까",
+      },
+    ],
+    material: { href: "/materials/ep08.html", label: "EP.08 최근 동향 보기" },
     status: "next",
   },
 ];
